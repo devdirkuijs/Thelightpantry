@@ -1,1 +1,0 @@
-$jsonFile:/tmp/mcp_index_args.json#content
