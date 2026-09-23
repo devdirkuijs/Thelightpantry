@@ -1,0 +1,48 @@
+name: Assemble upload parts
+on:
+  push:
+    branches: ['cursor/site-audit-capture-slice-9ded']
+    paths:
+      - 'lightpantry-github/.assemble/**'
+      - '.github/workflows/assemble-upload.yml'
+  workflow_dispatch:
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: cursor/site-audit-capture-slice-9ded
+          fetch-depth: 0
+      - name: Assemble and commit
+        env:
+          INDEX_MSG: Harden contact form, Netlify Forms, SEO, and replace Wix assets
+          SVG_MSG: Add optimized about portrait (SVG-wrapped JPEG, replaces multi-MB Wix CDN)
+        run: |
+          set -euo pipefail
+          git config user.name "devdirkuijs"
+          git config user.email "dirkuijs.dev@gmail.com"
+          if ls lightpantry-github/.assemble/index.* >/dev/null 2>&1; then
+            cat lightpantry-github/.assemble/index.* > lightpantry-github/index.html
+            git add lightpantry-github/index.html
+            if ! git diff --cached --quiet; then
+              git commit -m "$INDEX_MSG"
+            fi
+          fi
+          if ls lightpantry-github/.assemble/svg.* >/dev/null 2>&1; then
+            mkdir -p lightpantry-github/images
+            cat lightpantry-github/.assemble/svg.* > lightpantry-github/images/about-jonelle.svg
+            git add lightpantry-github/images/about-jonelle.svg
+            if ! git diff --cached --quiet; then
+              git commit -m "$SVG_MSG"
+            fi
+          fi
+          # Remove assemble parts after success
+          rm -rf lightpantry-github/.assemble
+          git add -A lightpantry-github/.assemble || true
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: remove assemble parts after upload"
+          fi
+          git push origin HEAD:cursor/site-audit-capture-slice-9ded
