@@ -4,6 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>The Light Pantry — Photography</title>
+<meta name="description" content="The Light Pantry — warm, genuine photography in Lephalale, South Africa. People, food, interiors, products &amp; more. Enquire on WhatsApp.">
+<link rel="canonical" href="https://thelightpantry.co.za/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://thelightpantry.co.za/">
+<meta property="og:title" content="The Light Pantry — Photography">
+<meta property="og:description" content="Warm, genuine photography in Lephalale, South Africa. People, food, interiors, products &amp; more.">
+<meta property="og:image" content="https://thelightpantry.co.za/images/people-13.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Light Pantry — Photography">
+<meta name="twitter:description" content="Warm, genuine photography in Lephalale, South Africa. People, food, interiors, products &amp; more.">
+<meta name="twitter:image" content="https://thelightpantry.co.za/images/people-13.jpg">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="images/favicon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500;600&family=Dancing+Script:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -661,7 +674,57 @@
   .form-group textarea:focus { border-color:var(--rose); }
   .form-group textarea { resize:none; height:120px; }
   .form-group select option { background:var(--white); color:var(--text); }
+  .form-group.is-invalid input,
+  .form-group.is-invalid select,
+  .form-group.is-invalid textarea { border-color:var(--rose-deep); }
+  .field-error {
+    display:none; margin-top:8px;
+    font-size:11px; color:var(--rose-deep); font-weight:400; letter-spacing:0.02em;
+  }
+  .form-group.is-invalid .field-error { display:block; }
   .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .prefer-row {
+    display:flex; flex-wrap:wrap; gap:10px;
+  }
+  .prefer-option {
+    display:inline-flex; align-items:center; gap:8px;
+    padding:10px 14px;
+    border:1px solid rgba(74,46,46,0.12);
+    background:var(--white); border-radius:2px;
+    font-size:12px; color:var(--text); font-weight:300;
+    cursor:pointer; transition:border-color 0.25s, background 0.25s;
+  }
+  .prefer-option:has(input:checked) {
+    border-color:var(--rose); background:rgba(176,112,112,0.06);
+  }
+  .prefer-option input { width:auto; margin:0; accent-color:var(--rose); }
+  .hp-field {
+    position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;
+  }
+  .form-status {
+    display:none; margin-top:18px; padding:16px 18px;
+    background:rgba(176,112,112,0.08);
+    border:1px solid rgba(176,112,112,0.22);
+    border-radius:2px;
+  }
+  .form-status.is-visible { display:block; }
+  .form-status-title {
+    font-size:12px; color:var(--text); font-weight:500;
+    letter-spacing:0.04em; margin-bottom:6px;
+  }
+  .form-status-body {
+    font-size:11px; color:var(--text-muted); font-weight:300;
+    line-height:1.7; letter-spacing:0.02em;
+  }
+  .wa-fallback {
+    display:none; margin-top:14px; text-align:center;
+    width:100%; padding:14px 20px;
+    background:var(--rose); color:#fff;
+    font-size:10px; letter-spacing:0.28em; text-transform:uppercase;
+    font-weight:500; text-decoration:none; border-radius:2px;
+  }
+  .wa-fallback.is-visible { display:block; }
+  .wa-fallback:hover { background:var(--rose-deep); }
 
   /* ── FOOTER ── */
   footer {
@@ -992,14 +1055,6 @@
         <p class="portfolio-count" data-count="product"></p>
       </div>
     </div>
-    <div class="portfolio-item" data-cat="scenery" onclick="openGallery('scenery')">
-      <img src="https://static.wixstatic.com/media/cdf99a_d30b8c669c6848d49ed01e928d0f9272~mv2.jpg" alt="Scenery Photography">
-      <div class="portfolio-overlay">
-        <p class="portfolio-cat">Scenery</p>
-        <h3 class="portfolio-name">Land &amp; Sky</h3>
-        <p class="portfolio-count" data-count="scenery"></p>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -1027,7 +1082,7 @@
 <!-- ABOUT -->
 <div id="about">
   <div class="about-img">
-    <img src="https://static.wixstatic.com/media/cdf99a_1de60164cca7450ba06fb0a4b2511364~mv2.jpg" alt="Jonelle Uijs — The Light Pantry">
+    <img src="images/about-jonelle.svg" alt="Jonelle Uijs — The Light Pantry" width="1200" height="800" loading="lazy">
   </div>
   <div class="about-text reveal">
     <p class="section-label">The Vision</p>
@@ -1158,7 +1213,7 @@
     </div>
     <div class="contact-detail">
       <div class="contact-icon">🌐</div>
-      <div><div class="contact-detail-label">Website</div><div class="contact-detail-value">www.thelightpantry.com</div></div>
+      <div><div class="contact-detail-label">Website</div><div class="contact-detail-value"><a href="https://thelightpantry.co.za" style="color:inherit;text-decoration:none;">thelightpantry.co.za</a></div></div>
     </div>
     <div class="contact-socials">
       <a href="https://www.instagram.com/the_light_pantry" class="social-btn" target="_blank">📷</a>
@@ -1168,15 +1223,36 @@
   </div>
   <div class="contact-form-wrap">
     <p class="section-label">Send a Message</p>
-    <form id="waForm" onsubmit="sendToWhatsApp(event)">
+    <form id="waForm" name="contact" method="POST" data-netlify="true" netlify netlify-honeypot="bot-field" action="/" novalidate onsubmit="return handleContactSubmit(event)">
+      <input type="hidden" name="form-name" value="contact">
+      <p class="hp-field" aria-hidden="true">
+        <label for="bot-field">Don’t fill this out</label>
+        <input id="bot-field" name="bot-field" type="text" tabindex="-1" autocomplete="off">
+      </p>
       <div class="form-row">
-        <div class="form-group"><label>First Name</label><input id="f_first" type="text" placeholder="Jane"></div>
-        <div class="form-group"><label>Last Name</label><input id="f_last" type="text" placeholder="Smith"></div>
+        <div class="form-group" id="group_first">
+          <label for="f_first">First Name</label>
+          <input id="f_first" name="first_name" type="text" placeholder="Jane" autocomplete="given-name" required>
+          <span class="field-error" id="err_first">Please enter your first name.</span>
+        </div>
+        <div class="form-group" id="group_last">
+          <label for="f_last">Last Name</label>
+          <input id="f_last" name="last_name" type="text" placeholder="Smith" autocomplete="family-name">
+        </div>
       </div>
-      <div class="form-group"><label>Your Phone (optional)</label><input id="f_phone" type="tel" placeholder="082 000 0000"></div>
-      <div class="form-group">
-        <label>Service Interest</label>
-        <select id="f_service">
+      <div class="form-group" id="group_phone">
+        <label for="f_phone">Phone / WhatsApp</label>
+        <input id="f_phone" name="phone" type="tel" placeholder="082 000 0000" autocomplete="tel" required>
+        <span class="field-error" id="err_phone">Please add a phone or WhatsApp number so Jonelle can reach you.</span>
+      </div>
+      <div class="form-group" id="group_email">
+        <label for="f_email">Email <span style="font-weight:400;letter-spacing:0.08em;text-transform:none;">(optional)</span></label>
+        <input id="f_email" name="email" type="email" placeholder="jane@email.com" autocomplete="email">
+        <span class="field-error" id="err_email">Please enter a valid email, or leave it blank.</span>
+      </div>
+      <div class="form-group" id="group_service">
+        <label for="f_service">Service Interest</label>
+        <select id="f_service" name="service" required>
           <option value="">Select a service...</option>
           <option>Package 1 — The Essential (R1000)</option>
           <option>Package 2 — The Signature (R1250)</option>
@@ -1185,14 +1261,32 @@
           <option>Food, Product or Property (quote)</option>
           <option>Not sure yet / Other</option>
         </select>
+        <span class="field-error" id="err_service">Please choose a service.</span>
       </div>
-      <div class="form-group"><label>Your Message</label><textarea id="f_message" placeholder="Tell me about your project, event, or idea..."></textarea></div>
-      <button type="submit" class="btn-rose" style="width:100%;cursor:none;border:none;font-family:'Jost',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;">
+      <div class="form-group" id="group_prefer">
+        <label id="prefer_label">Preferred contact</label>
+        <div class="prefer-row" role="radiogroup" aria-labelledby="prefer_label">
+          <label class="prefer-option"><input type="radio" name="preferred_contact" value="WhatsApp" checked> WhatsApp</label>
+          <label class="prefer-option"><input type="radio" name="preferred_contact" value="Call"> Call</label>
+          <label class="prefer-option"><input type="radio" name="preferred_contact" value="Email"> Email</label>
+        </div>
+      </div>
+      <div class="form-group" id="group_message">
+        <label for="f_message">Your Message</label>
+        <textarea id="f_message" name="message" placeholder="Tell me about your project, event, or idea..." required></textarea>
+        <span class="field-error" id="err_message">Please add a short message.</span>
+      </div>
+      <button type="submit" id="waSubmit" class="btn-rose" style="width:100%;cursor:none;border:none;font-family:'Jost',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff" style="flex-shrink:0;"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
         Send via WhatsApp
       </button>
+      <a id="waFallback" class="wa-fallback" href="#" target="_blank" rel="noopener noreferrer">Continue in WhatsApp</a>
+      <div id="formStatus" class="form-status" role="status" aria-live="polite">
+        <p class="form-status-title">WhatsApp should open with your message</p>
+        <p class="form-status-body">Tap <strong>Send</strong> in WhatsApp to reach Jonelle. We’ll reply during business hours. Your enquiry is also saved for follow-up.</p>
+      </div>
       <p style="font-size:10px;color:var(--text-muted);text-align:center;margin-top:14px;letter-spacing:0.04em;line-height:1.6;">
-        Tapping send opens WhatsApp with your message ready to go — just hit send to reach Jonelle directly.
+        Your details are saved securely, then WhatsApp opens with your message ready — just tap send to reach Jonelle.
       </p>
     </form>
   </div>
@@ -1417,36 +1511,150 @@
     if (e.target.id === 'lightbox') closeLightbox();
   });
 
-  // Contact form → WhatsApp
+  // Contact form → Netlify Forms dual-write + WhatsApp
   const WA_NUMBER = '27832285174'; // Jonelle — international format, no + or spaces
-  function sendToWhatsApp(e) {
-    e.preventDefault();
+  let formSubmitting = false;
+
+  function setInvalid(groupId, on) {
+    const el = document.getElementById(groupId);
+    if (el) el.classList.toggle('is-invalid', !!on);
+  }
+
+  function clearFormErrors() {
+    ['group_first','group_phone','group_email','group_service','group_message'].forEach(id => setInvalid(id, false));
+  }
+
+  function validateContactForm() {
+    clearFormErrors();
+    const first   = document.getElementById('f_first').value.trim();
+    const phone   = document.getElementById('f_phone').value.trim();
+    const email   = document.getElementById('f_email').value.trim();
+    const service = document.getElementById('f_service').value.trim();
+    const message = document.getElementById('f_message').value.trim();
+    let ok = true;
+    let firstBad = null;
+
+    if (!first) { setInvalid('group_first', true); ok = false; firstBad = firstBad || 'f_first'; }
+    if (!phone) { setInvalid('group_phone', true); ok = false; firstBad = firstBad || 'f_phone'; }
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setInvalid('group_email', true); ok = false; firstBad = firstBad || 'f_email';
+    }
+    if (!service) { setInvalid('group_service', true); ok = false; firstBad = firstBad || 'f_service'; }
+    if (!message) { setInvalid('group_message', true); ok = false; firstBad = firstBad || 'f_message'; }
+
+    if (firstBad) {
+      const focusEl = document.getElementById(firstBad);
+      if (focusEl) focusEl.focus();
+    }
+    return ok;
+  }
+
+  function buildWhatsAppUrl() {
     const first   = document.getElementById('f_first').value.trim();
     const last    = document.getElementById('f_last').value.trim();
     const phone   = document.getElementById('f_phone').value.trim();
+    const email   = document.getElementById('f_email').value.trim();
     const service = document.getElementById('f_service').value.trim();
     const message = document.getElementById('f_message').value.trim();
-
+    const prefer  = (document.querySelector('input[name="preferred_contact"]:checked') || {}).value || 'WhatsApp';
     const name = [first, last].filter(Boolean).join(' ');
 
-    // Build a friendly, readable message
-    let lines = ['Hi Jonelle! 👋 I found you via your website.'];
-    lines.push('');
+    const lines = ['Hi Jonelle! 👋 I found you via your website.', ''];
     if (name)    lines.push(`*Name:* ${name}`);
     if (phone)   lines.push(`*Phone:* ${phone}`);
+    if (email)   lines.push(`*Email:* ${email}`);
+    if (prefer)  lines.push(`*Prefer:* ${prefer}`);
     if (service) lines.push(`*Interested in:* ${service}`);
     if (message) { lines.push(''); lines.push(message); }
 
-    const text = encodeURIComponent(lines.join('\n'));
-    const url = `https://wa.me/${WA_NUMBER}?text=${text}`;
-
-    // Brief confirmation, then open WhatsApp
-    const btn = e.target.querySelector('button[type="submit"]');
-    const original = btn.innerHTML;
-    btn.innerHTML = 'Opening WhatsApp…';
-    window.open(url, '_blank');
-    setTimeout(() => { btn.innerHTML = original; }, 2500);
+    return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(lines.join('\n'))}`;
   }
+
+  async function postToNetlify(form) {
+    const formData = new FormData(form);
+    // Ensure form-name is present for Netlify Forms detection
+    if (!formData.get('form-name')) formData.set('form-name', 'contact');
+    const body = new URLSearchParams(formData).toString();
+    const res = await fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body
+    });
+    if (!res.ok) throw new Error('Netlify form post failed');
+  }
+
+  function showFormSuccess(waUrl, opened) {
+    const status = document.getElementById('formStatus');
+    const fallback = document.getElementById('waFallback');
+    status.classList.add('is-visible');
+    fallback.href = waUrl;
+    if (!opened) {
+      fallback.classList.add('is-visible');
+      fallback.focus();
+    } else {
+      // Still offer the link as a quiet backup after a short delay
+      fallback.classList.add('is-visible');
+    }
+  }
+
+  async function handleContactSubmit(e) {
+    e.preventDefault();
+    if (formSubmitting) return false;
+
+    const form = e.target;
+    if (!validateContactForm()) return false;
+
+    formSubmitting = true;
+    const btn = document.getElementById('waSubmit');
+    const original = btn.innerHTML;
+    btn.disabled = true;
+    btn.setAttribute('aria-busy', 'true');
+    btn.innerHTML = 'Saving & opening WhatsApp…';
+
+    const waUrl = buildWhatsAppUrl();
+    document.getElementById('waFallback').href = waUrl;
+
+    // Persist to Netlify Forms first (best-effort), then always open WhatsApp
+    try {
+      await postToNetlify(form);
+    } catch (err) {
+      // WA path still works if Netlify is unreachable (e.g. local file open)
+      console.warn('Netlify Forms post skipped or failed:', err);
+    }
+
+    let opened = false;
+    try {
+      const win = window.open(waUrl, '_blank');
+      opened = !!(win && !win.closed);
+    } catch (err) {
+      opened = false;
+    }
+
+    showFormSuccess(waUrl, opened);
+    btn.innerHTML = opened ? 'Message ready' : 'Use the link below';
+    setTimeout(() => {
+      btn.innerHTML = original;
+      btn.disabled = false;
+      btn.removeAttribute('aria-busy');
+      formSubmitting = false;
+    }, 2800);
+
+    return false;
+  }
+
+  // Clear inline errors as the visitor corrects fields
+  ['f_first','f_phone','f_email','f_service','f_message'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', () => {
+      const map = { f_first:'group_first', f_phone:'group_phone', f_email:'group_email', f_service:'group_service', f_message:'group_message' };
+      setInvalid(map[id], false);
+    });
+    el.addEventListener('change', () => {
+      const map = { f_first:'group_first', f_phone:'group_phone', f_email:'group_email', f_service:'group_service', f_message:'group_message' };
+      setInvalid(map[id], false);
+    });
+  });
 </script>
 </body>
 </html>
