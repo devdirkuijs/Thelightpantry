@@ -3,8 +3,7 @@ on:
   push:
     branches: ['cursor/site-audit-capture-slice-9ded']
     paths:
-      - 'lightpantry-github/.assemble/**'
-      - '.github/workflows/assemble-upload.yml'
+      - 'lightpantry-github/.assemble/READY.json'
   workflow_dispatch:
 jobs:
   assemble:
@@ -24,22 +23,43 @@ jobs:
           set -euo pipefail
           git config user.name "devdirkuijs"
           git config user.email "dirkuijs.dev@gmail.com"
-          if ls lightpantry-github/.assemble/index.* >/dev/null 2>&1; then
-            cat lightpantry-github/.assemble/index.* > lightpantry-github/index.html
-            git add lightpantry-github/index.html
-            if ! git diff --cached --quiet; then
-              git commit -m "$INDEX_MSG"
-            fi
+
+          READY=lightpantry-github/.assemble/READY.json
+          test -f "$READY"
+          python3 <<'PY'
+          import base64, hashlib, json, pathlib, sys
+          root = pathlib.Path('lightpantry-github/.assemble')
+          ready = json.loads((root/'READY.json').read_text())
+
+          def assemble(prefix, out_path, meta):
+              parts = sorted(root.glob(f'{prefix}.*'), key=lambda p: p.name)
+              expected = meta['parts']
+              if len(parts) != expected:
+                  raise SystemExit(f'{prefix}: expected {expected} parts, found {len(parts)}: {[p.name for p in parts]}')
+              b64 = ''.join(p.read_text() for p in parts)
+              if len(b64) != meta['b64_size']:
+                  raise SystemExit(f'{prefix}: b64 size {len(b64)} != {meta["b64_size"]}')
+              raw = base64.b64decode(b64, validate=True)
+              digest = hashlib.sha256(raw).hexdigest()
+              if digest != meta['decoded_sha256'] or len(raw) != meta['decoded_size']:
+                  raise SystemExit(f'{prefix}: decoded mismatch size={len(raw)} sha={digest}')
+              out = pathlib.Path(out_path)
+              out.parent.mkdir(parents=True, exist_ok=True)
+              out.write_bytes(raw)
+              print(f'OK {prefix} -> {out} ({len(raw)} bytes, {digest})')
+
+          assemble('index.b64', 'lightpantry-github/index.html', ready['index'])
+          assemble('svg.b64', 'lightpantry-github/images/about-jonelle.svg', ready['svg'])
+          PY
+
+          git add lightpantry-github/index.html
+          if ! git diff --cached --quiet; then
+            git commit -m "$INDEX_MSG"
           fi
-          if ls lightpantry-github/.assemble/svg.* >/dev/null 2>&1; then
-            mkdir -p lightpantry-github/images
-            cat lightpantry-github/.assemble/svg.* > lightpantry-github/images/about-jonelle.svg
-            git add lightpantry-github/images/about-jonelle.svg
-            if ! git diff --cached --quiet; then
-              git commit -m "$SVG_MSG"
-            fi
+          git add lightpantry-github/images/about-jonelle.svg
+          if ! git diff --cached --quiet; then
+            git commit -m "$SVG_MSG"
           fi
-          # Remove assemble parts after success
           rm -rf lightpantry-github/.assemble
           git add -A lightpantry-github/.assemble || true
           if ! git diff --cached --quiet; then
