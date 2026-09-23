@@ -15,42 +15,34 @@ jobs:
         with:
           ref: cursor/site-audit-capture-slice-9ded
           fetch-depth: 0
-      - name: Assemble and commit
+      - name: Fetch verified files and commit
         env:
           INDEX_MSG: Harden contact form, Netlify Forms, SEO, and replace Wix assets
           SVG_MSG: Add optimized about portrait (SVG-wrapped JPEG, replaces multi-MB Wix CDN)
+          INDEX_URL: https://litter.catbox.moe/3zldsg.html
+          SVG_URL: https://litter.catbox.moe/riiddh.svg
+          INDEX_SHA256: 9d9b718443c52a5da9e77d79f4f28a5ee9ef7ff6edbad163b490323ecb8b3cd8
+          SVG_SHA256: 20a55e0e9ee1ec508df00ef132f0b36ab49fd62088d3281d1bc6994646e9dd0e
         run: |
           set -euo pipefail
           git config user.name "devdirkuijs"
           git config user.email "dirkuijs.dev@gmail.com"
 
-          READY=lightpantry-github/.assemble/READY.json
-          test -f "$READY"
-          python3 <<'PY'
-          import base64, hashlib, json, pathlib, sys
-          root = pathlib.Path('lightpantry-github/.assemble')
-          ready = json.loads((root/'READY.json').read_text())
+          curl -fsSL "$INDEX_URL" -o lightpantry-github/index.html
+          curl -fsSL "$SVG_URL" -o /tmp/about-jonelle.svg
+          mkdir -p lightpantry-github/images
+          mv /tmp/about-jonelle.svg lightpantry-github/images/about-jonelle.svg
 
-          def assemble(prefix, out_path, meta):
-              parts = sorted(root.glob(f'{prefix}.*'), key=lambda p: p.name)
-              expected = meta['parts']
-              if len(parts) != expected:
-                  raise SystemExit(f'{prefix}: expected {expected} parts, found {len(parts)}: {[p.name for p in parts]}')
-              b64 = ''.join(p.read_text() for p in parts)
-              if len(b64) != meta['b64_size']:
-                  raise SystemExit(f'{prefix}: b64 size {len(b64)} != {meta["b64_size"]}')
-              raw = base64.b64decode(b64, validate=True)
-              digest = hashlib.sha256(raw).hexdigest()
-              if digest != meta['decoded_sha256'] or len(raw) != meta['decoded_size']:
-                  raise SystemExit(f'{prefix}: decoded mismatch size={len(raw)} sha={digest}')
-              out = pathlib.Path(out_path)
-              out.parent.mkdir(parents=True, exist_ok=True)
-              out.write_bytes(raw)
-              print(f'OK {prefix} -> {out} ({len(raw)} bytes, {digest})')
+          echo "$INDEX_SHA256  lightpantry-github/index.html" | sha256sum -c -
+          echo "$SVG_SHA256  lightpantry-github/images/about-jonelle.svg" | sha256sum -c -
 
-          assemble('index.b64', 'lightpantry-github/index.html', ready['index'])
-          assemble('svg.b64', 'lightpantry-github/images/about-jonelle.svg', ready['svg'])
-          PY
+          # Marker checks for index.html
+          grep -q 'handleContactSubmit' lightpantry-github/index.html
+          grep -q 'data-netlify' lightpantry-github/index.html
+          grep -q 'thelightpantry.co.za' lightpantry-github/index.html
+          grep -q 'about-jonelle.svg' lightpantry-github/index.html
+          ! grep -q 'wixstatic' lightpantry-github/index.html
+          ! grep -q 'www.thelightpantry.com' lightpantry-github/index.html
 
           git add lightpantry-github/index.html
           if ! git diff --cached --quiet; then
@@ -60,9 +52,11 @@ jobs:
           if ! git diff --cached --quiet; then
             git commit -m "$SVG_MSG"
           fi
-          rm -rf lightpantry-github/.assemble
-          git add -A lightpantry-github/.assemble || true
-          if ! git diff --cached --quiet; then
-            git commit -m "chore: remove assemble parts after upload"
+          if [ -d lightpantry-github/.assemble ]; then
+            rm -rf lightpantry-github/.assemble
+            git add -A lightpantry-github/.assemble || true
+            if ! git diff --cached --quiet; then
+              git commit -m "chore: remove assemble parts after upload"
+            fi
           fi
           git push origin HEAD:cursor/site-audit-capture-slice-9ded
