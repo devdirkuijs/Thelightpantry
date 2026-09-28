@@ -1,0 +1,34 @@
+name: Apply lightbox opaque fix
+on:
+  push:
+    branches: ['cursor/gallery-design-polish-5fad']
+    paths:
+      - 'lightpantry-github/.assemble/READY-lightbox.json'
+  workflow_dispatch:
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: cursor/gallery-design-polish-5fad
+      - name: Apply patch
+        run: |
+          set -euo pipefail
+          git config user.name "devdirkuijs"
+          git config user.email "dirkuijs.dev@gmail.com"
+          git apply lightpantry-github/.assemble/lightbox-opaque.patch
+          echo "3ab0e0aa923e5230bf11b10637c5cd694f15253e568eaa122f227d85f83881dd  lightpantry-github/index.html" | sha256sum -c -
+          grep -q 'background:#3A2424' lightpantry-github/index.html
+          ! grep -q 'background:rgba(58, 36, 36, 0.94)' lightpantry-github/index.html
+          git add lightpantry-github/index.html
+          git commit -m "Make lightbox backdrop fully opaque to avoid gallery bleed-through"
+          rm -rf lightpantry-github/.assemble
+          rm -f .github/workflows/lightbox-opaque.yml
+          git add -A lightpantry-github/.assemble .github/workflows/lightbox-opaque.yml || true
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: remove temporary lightbox patch workflow"
+          fi
+          git push origin HEAD:cursor/gallery-design-polish-5fad
