@@ -1,0 +1,272 @@
+:0 14px;
++    border:1px solid rgba(255,255,255,0.22); border-radius:0;
++    background:rgba(255,255,255,0.06); color:#fff;
++    font-size:13px; letter-spacing:0.16em; text-transform:uppercase;
++    font-family:'Jost', sans-serif; font-weight:400;
++    cursor:pointer; transition:background 0.25s, border-color 0.25s;
++    display:flex; align-items:center; justify-content:center; gap:8px;
++    z-index:2;
++  }
++  .lightbox-close:hover { background:rgba(255,255,255,0.16); border-color:rgba(255,255,255,0.4); }
++  .lightbox-close:focus-visible { outline:2px solid var(--blush); outline-offset:3px; }
++  .lightbox-controls {
++    position:absolute; inset:0; pointer-events:none;
+   }
+-  .lightbox-close:hover { background:rgba(255,255,255,0.25); }
+   .lightbox-nav {
++    pointer-events:auto;
+     position:absolute; top:50%; transform:translateY(-50%);
+-    width:54px; height:54px; border-radius:50%;
+-    background:rgba(255,255,255,0.1); border:none; color:#fff;
+-    font-size:24px; cursor:pointer; transition:background 0.3s;
+-    display:flex; align-items:center; justify-content:center;
+-  }
+-  .lightbox-nav:hover { background:rgba(255,255,255,0.22); }
+-  .lightbox-prev { left:28px; }
+-  .lightbox-next { right:28px; }
+-  .lightbox-counter {
+-    position:absolute; bottom:28px; left:50%; transform:translateX(-50%);
+-    color:rgba(255,255,255,0.7); font-size:11px; letter-spacing:0.2em;
++    width:52px; height:52px; border-radius:0;
++    background:rgba(255,255,255,0.08);
++    border:1px solid rgba(255,255,255,0.18); color:#fff;
++    font-size:26px; line-height:1; cursor:pointer;
++    transition:background 0.25s, border-color 0.25s;
++    display:flex; align-items:center; justify-content:center; gap:8px;
++    z-index:2;
++    font-family:'Jost', sans-serif;
+   }
++  .lightbox-nav-label { display:none; font-size:12px; letter-spacing:0.18em; text-transform:uppercase; }
++  .lightbox-nav:hover { background:rgba(255,255,255,0.18); border-color:rgba(255,255,255,0.35); }
++  .lightbox-nav:focus-visible { outline:2px solid var(--blush); outline-offset:3px; }
++  .lightbox-prev { left:max(16px, env(safe-area-inset-left)); }
++  .lightbox-next { right:max(16px, env(safe-area-inset-right)); }
+ 
+   /* ── ABOUT ── */
+   #about {
+@@ -764,6 +842,17 @@
+   .reveal { opacity:0; transform:translateY(36px); transition:opacity 0.85s ease, transform 0.85s ease; }
+   .reveal.visible { opacity:1; transform:translateY(0); }
+ 
++  @media (prefers-reduced-motion: reduce) {
++    html { scroll-behavior: auto; }
++    .reveal { opacity:1; transform:none; transition:none; }
++    .portfolio-frame img,
++    .gallery-photo img,
++    .gallery-overlay,
++    .lightbox,
++    .lightbox img { transition: none !important; }
++    .gallery-overlay.open .gallery-grid { animation: none; }
++  }
++
+   /* ── SCRIPT ACCENT ── */
+   .script { font-family:'Dancing Script', cursive; font-weight:600; }
+ 
+@@ -849,36 +938,67 @@
+     /* Portfolio header stacks */
+     .portfolio-header {
+       flex-direction: column; align-items: flex-start;
+-      gap: 20px; margin-bottom: 32px;
++      gap: 14px; margin-bottom: 28px;
+     }
+-    .portfolio-filters { flex-wrap: wrap; gap: 10px; }
+-    .portfolio-filters button { cursor: auto; font-size: 11px; padding: 6px 0; }
++    .portfolio-hint { text-align: left; max-width: 36ch; }
+ 
+-    /* Portfolio grid → 2 col */
++    /* Portfolio: hero + 2-col supporting */
+     .portfolio-grid {
+       grid-template-columns: 1fr 1fr;
+-      grid-auto-rows: 190px;
+-      gap: 8px;
++      gap: 28px 14px;
+     }
+-    .portfolio-item:nth-child(1) { grid-column: span 2; grid-row: span 1; }
+-    .portfolio-item:nth-child(2) { grid-column: span 1; grid-row: span 1; }
+-    .portfolio-item:nth-child(3) { grid-column: span 1; grid-row: span 1; }
+-    .portfolio-item:nth-child(4) { grid-column: span 1; grid-row: span 1; }
+-    .portfolio-item:nth-child(5) { grid-column: span 1; grid-row: span 1; }
+-    /* Labels always visible on touch */
+-    .portfolio-overlay { opacity: 1; background: linear-gradient(to top, rgba(74,46,46,0.6) 0%, transparent 55%); }
++    .portfolio-item:first-child { grid-column: 1 / -1; }
++    .portfolio-item:first-child .portfolio-frame { aspect-ratio: 16 / 10; }
++    .portfolio-frame { aspect-ratio: 4 / 5; }
++    .portfolio-name { font-size: 22px; }
++    .portfolio-meta { gap: 2px; }
+ 
+     /* Gallery overlay mobile */
+-    .gallery-head { padding: 18px 22px; }
++    .gallery-head { padding: 14px 18px 14px 20px; gap: 12px; }
+     .gallery-title { font-size: 26px; }
+-    .gallery-close { width: 40px; height: 40px; }
+-    .gallery-grid { columns: 2; column-gap: 8px; padding: 20px 16px 60px; }
+-    .gallery-photo { margin-bottom: 8px; }
+-    .lightbox { padding: 16px; }
+-    .lightbox-nav { width: 44px; height: 44px; }
+-    .lightbox-prev { left: 10px; }
+-    .lightbox-next { right: 10px; }
+-    .lightbox-close { top: 16px; right: 16px; }
++    .gallery-close { width: 44px; height: 44px; }
++    .gallery-grid {
++      grid-template-columns: 1fr 1fr;
++      gap: 8px;
++      padding: 18px 16px 80px;
++    }
++    .gallery-photo--feature {
++      grid-column: 1 / -1;
++      aspect-ratio: 16 / 10;
++    }
++    .gallery-photo { aspect-ratio: 3 / 4; }
++
++    /* Lightbox: thumb-reach controls at bottom */
++    .lightbox {
++      padding: 64px 12px calc(96px + env(safe-area-inset-bottom));
++      justify-content: center;
++    }
++    .lightbox img { max-height: min(68vh, 640px); }
++    .lightbox-close {
++      top: max(12px, env(safe-area-inset-top));
++      right: max(12px, env(safe-area-inset-right));
++      min-width: 48px; min-height: 48px;
++      font-size: 11px;
++    }
++    .lightbox-caption { margin-top: 14px; font-size: 10px; }
++    .lightbox-controls {
++      inset: auto 0 0 0;
++      display: flex;
++      gap: 10px;
++      padding: 12px 16px calc(16px + env(safe-area-inset-bottom));
++      background: linear-gradient(to top, rgba(58,36,36,0.98), rgba(58,36,36,0.72) 70%, transparent);
++      pointer-events: auto;
++    }
++    .lightbox-nav {
++      position: static;
++      transform: none;
++      width: auto;
++      flex: 1;
++      height: 52px;
++      font-size: 14px;
++    }
++    .lightbox-nav-label { display: inline; }
++    .lightbox-nav-icon { font-size: 22px; line-height: 1; }
+ 
+     /* About — stack vertically */
+     #about { grid-template-columns: 1fr; }
+@@ -929,7 +1049,9 @@
+     .section-title { font-size: 32px; }
+     .about-quote { font-size: 19px; }
+     .contact-title { font-size: 30px; }
+-    .portfolio-grid { grid-auto-rows: 160px; }
++    .portfolio-grid { gap: 24px 12px; }
++    .portfolio-name { font-size: 20px; }
++    .portfolio-item:first-child .portfolio-frame { aspect-ratio: 3 / 2; }
+     .nav-drawer a { font-size: 36px; }
+     .stat-num { font-size: 32px; }
+     .services-grid { grid-template-columns: 1fr; }
+@@ -1018,65 +1140,93 @@
+       <p class="section-label">Selected Works</p>
+       <h2 class="section-title">The <em>Portfolio</em></h2>
+     </div>
+-    <p style="font-size:11px;color:var(--text-muted);letter-spacing:0.05em;font-weight:300;max-width:24ch;text-align:right;line-height:1.7;">
+-      Tap any category to explore the full gallery.
++    <p class="portfolio-hint">
++      Open a category to explore the full gallery.
+     </p>
+   </div>
+   <div class="portfolio-grid reveal">
+-    <div class="portfolio-item" data-cat="people" onclick="openGallery('people')">
+-      <img src="images/people-01-dumelang.jpg" alt="People Photography">
+-      <div class="portfolio-overlay">
+-        <p class="portfolio-cat">People</p>
++    <button type="button" class="portfolio-item" data-cat="people" onclick="openGallery('people')" aria-label="Open People gallery">
++      <div class="portfolio-frame">
++        <img src="images/people-01-dumelang.jpg" alt="People photography">
++      </div>
++      <div class="portfolio-meta">
++        <div class="portfolio-meta-row">
++          <p class="portfolio-cat">People</p>
++          <span class="portfolio-view">View →</span>
++        </div>
+         <h3 class="portfolio-name">Human Connection</h3>
+         <p class="portfolio-count" data-count="people"></p>
+       </div>
+-    </div>
+-    <div class="portfolio-item" data-cat="food" onclick="openGallery('food')">
+-      <img src="images/food-01.jpg" alt="Food Photography" loading="lazy">
+-      <div class="portfolio-overlay">
+-        <p class="portfolio-cat">Food</p>
++    </button>
++    <button type="button" class="portfolio-item" data-cat="food" onclick="openGallery('food')" aria-label="Open Food gallery">
++      <div class="portfolio-frame">
++        <img src="images/food-01.jpg" alt="Food photography" loading="lazy">
++      </div>
++      <div class="portfolio-meta">
++        <div class="portfolio-meta-row">
++          <p class="portfolio-cat">Food</p>
++          <span class="portfolio-view">View →</span>
++        </div>
+         <h3 class="portfolio-name">Taste &amp; Texture</h3>
+         <p class="portfolio-count" data-count="food"></p>
+       </div>
+-    </div>
+-    <div class="portfolio-item" data-cat="interior" onclick="openGallery('interior')">
+-      <img src="images/interior-01.jpg" alt="Interior Design" loading="lazy">
+-      <div class="portfolio-overlay">
+-        <p class="portfolio-cat">Interior</p>
++    </button>
++    <button type="button" class="portfolio-item" data-cat="interior" onclick="openGallery('interior')" aria-label="Open Interior gallery">
++      <div class="portfolio-frame">
++        <img src="images/interior-01.jpg" alt="Interior photography" loading="lazy">
++      </div>
++      <div class="portfolio-meta">
++        <div class="portfolio-meta-row">
++          <p class="portfolio-cat">Interior</p>
++          <span class="portfolio-view">View →</span>
++        </div>
+         <h3 class="portfolio-name">Space &amp; Light</h3>
+         <p class="portfolio-count" data-count="interior"></p>
+       </div>
+-    </div>
+-    <div class="portfolio-item" data-cat="product" onclick="openGallery('product')">
+-      <img src="images/product-01.jpg" alt="Product Photography" loading="lazy">
+-      <div class="portfolio-overlay">
+-        <p class="portfolio-cat">Products</p>
++    </button>
++    <button type="button" class="portfolio-item" data-cat="product" onclick="openGallery('product')" aria-label="Open Products gallery">
++      <div class="portfolio-frame">
++        <img src="images/product-01.jpg" alt="Product photography" loading="lazy">
++      </div>
++      <div class="portfolio-meta">
++        <div class="portfolio-meta-row">
++          <p class="portfolio-cat">Products</p>
++          <span class="portfolio-view">View →</span>
++        </div>
+         <h3 class="portfolio-name">Detail &amp; Craft</h3>
+         <p class="portfolio-count" data-count="product"></p>
+       </div>
+-    </div>
++    </button>
+   </div>
+ </section>
+ 
+ <!-- GALLERY OVERLAY -->
+-<div class="gallery-overlay" id="galleryOverlay">
++<div class="gallery-overlay" id="galleryOverlay" role="dialog" aria-modal="true" aria-labelledby="galleryTitle" hidden>
+   <div class="gallery-head">
+     <div class="gallery-head-left">
+-      <p class="gallery-cat-label" id="galleryCatLabel">Category</p>
++      <button type="button" class="gallery-back" onclick="closeGallery()" aria-label="Back to portfolio">← Back</button>
++      <p class="gallery-cat-label" id="galleryCatLabel">The Light Pantry</p>
+       <h2 class="gallery-title" id="galleryTitle">Gallery</h2>
+     </div>
+-    <button class="gallery-close" onclick="closeGallery()" aria-label="Close gallery">✕</button>
++    <button type="button" class="gallery-close" onclick="closeGallery()" aria-label="Close gallery">✕</button>
+   </div>
+   <div class="gallery-grid" id="galleryGrid"></div>
+ </div>
+ 
+ <!-- LIGHTBOX -->
+-<div class="lightbox" id="lightbox">
+-  <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">✕</button>
+-  <button class="lightbox-nav lightbox-prev" onclick="lightboxNav(-1)" aria-label="Previous">‹</button>
+-  <img i
