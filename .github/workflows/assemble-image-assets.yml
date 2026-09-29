@@ -1,0 +1,61 @@
+name: Assemble image assets
+on:
+  push:
+    paths:
+      - 'lightpantry-github/.assemble/READY.json'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: cursor/image-performance-9652
+          fetch-depth: 0
+      - name: Assemble from base64 parts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 << 'PY'
+          import json, base64, os, hashlib, pathlib
+          root = pathlib.Path('lightpantry-github/.assemble')
+          manifest = json.loads((root / 'manifest.json').read_text())
+          written = []
+          for item in manifest:
+              parts = []
+              for i in range(item['parts']):
+                  p = root / 'parts' / f"{item['id']}.{i:03d}.b64"
+                  parts.append(p.read_text())
+              raw = base64.b64decode(''.join(parts))
+              digest = hashlib.sha256(raw).hexdigest()
+              if digest != item['sha256']:
+                  raise SystemExit(f"sha256 mismatch {item['path']}: {digest} != {item['sha256']}")
+              if len(raw) != item['size']:
+                  raise SystemExit(f"size mismatch {item['path']}")
+              out = pathlib.Path(item['path'])
+              out.parent.mkdir(parents=True, exist_ok=True)
+              out.write_bytes(raw)
+              written.append(item['path'])
+              print(f"ok {item['path']} ({len(raw)} bytes)")
+          print(f"assembled {len(written)} files")
+          PY
+      - name: Delete probe and svg leftovers
+        shell: bash
+        run: |
+          rm -f lightpantry-github/images/about-jonelle.svg \
+                lightpantry-github/images/_probe.txt \
+                lightpantry-github/images/_probe.bin || true
+      - name: Commit assembled assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -rf lightpantry-github/.assemble
+          rm -f .github/workflows/assemble-image-assets.yml
+          git add -A
+          git status --short | head -50
+          git commit -m "perf: add optimized image assets (thumbs, full webp, hero, about)"
+          git push origin HEAD:cursor/image-performance-9652
