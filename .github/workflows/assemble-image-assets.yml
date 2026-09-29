@@ -14,32 +14,32 @@ jobs:
         with:
           ref: cursor/image-performance-9652
           fetch-depth: 0
-      - name: Assemble from base64 parts
+      - name: Assemble from base64 stream
         shell: bash
         run: |
           set -euo pipefail
           python3 << 'PY'
-          import json, base64, os, hashlib, pathlib
+          import json, base64, hashlib, pathlib
           root = pathlib.Path('lightpantry-github/.assemble')
-          manifest = json.loads((root / 'manifest.json').read_text())
-          written = []
-          for item in manifest:
-              parts = []
-              for i in range(item['parts']):
-                  p = root / 'parts' / f"{item['id']}.{i:03d}.b64"
-                  parts.append(p.read_text())
-              raw = base64.b64decode(''.join(parts))
+          meta = json.loads((root / 'stream-manifest.json').read_text())
+          parts = []
+          for i in range(meta['chunks']):
+              parts.append((root / 'stream' / f'{i:04d}.b64').read_text())
+          stream = ''.join(parts)
+          assert len(stream) == meta['stream_len'], (len(stream), meta['stream_len'])
+          for item in meta['assets']:
+              b64 = stream[item['start']:item['start']+item['length']]
+              raw = base64.b64decode(b64)
               digest = hashlib.sha256(raw).hexdigest()
               if digest != item['sha256']:
-                  raise SystemExit(f"sha256 mismatch {item['path']}: {digest} != {item['sha256']}")
+                  raise SystemExit(f"sha256 mismatch {item['path']}")
               if len(raw) != item['size']:
                   raise SystemExit(f"size mismatch {item['path']}")
               out = pathlib.Path(item['path'])
               out.parent.mkdir(parents=True, exist_ok=True)
               out.write_bytes(raw)
-              written.append(item['path'])
               print(f"ok {item['path']} ({len(raw)} bytes)")
-          print(f"assembled {len(written)} files")
+          print(f"assembled {len(meta['assets'])} files")
           PY
       - name: Delete probe and svg leftovers
         shell: bash
@@ -56,6 +56,6 @@ jobs:
           rm -rf lightpantry-github/.assemble
           rm -f .github/workflows/assemble-image-assets.yml
           git add -A
-          git status --short | head -50
+          git status --short | head -80
           git commit -m "perf: add optimized image assets (thumbs, full webp, hero, about)"
           git push origin HEAD:cursor/image-performance-9652
