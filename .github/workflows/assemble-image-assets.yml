@@ -14,32 +14,26 @@ jobs:
         with:
           ref: cursor/image-performance-9652
           fetch-depth: 0
-      - name: Assemble from base64 stream
+      - name: Download and extract image assets
         shell: bash
         run: |
           set -euo pipefail
-          python3 << 'PY'
-          import json, base64, hashlib, pathlib
-          root = pathlib.Path('lightpantry-github/.assemble')
-          meta = json.loads((root / 'stream-manifest.json').read_text())
-          parts = []
-          for i in range(meta['chunks']):
-              parts.append((root / 'stream' / f'{i:04d}.b64').read_text())
-          stream = ''.join(parts)
-          assert len(stream) == meta['stream_len'], (len(stream), meta['stream_len'])
-          for item in meta['assets']:
-              b64 = stream[item['start']:item['start']+item['length']]
-              raw = base64.b64decode(b64)
-              digest = hashlib.sha256(raw).hexdigest()
-              if digest != item['sha256']:
-                  raise SystemExit(f"sha256 mismatch {item['path']}")
-              if len(raw) != item['size']:
-                  raise SystemExit(f"size mismatch {item['path']}")
-              out = pathlib.Path(item['path'])
-              out.parent.mkdir(parents=True, exist_ok=True)
-              out.write_bytes(raw)
-              print(f"ok {item['path']} ({len(raw)} bytes)")
-          print(f"assembled {len(meta['assets'])} files")
+          EXPECTED_SHA256="c8c989c455d230f3750d3c617b8a67fc49bb3b5e844f682d5d6b42f4097eac0e"
+          URL="https://tmpfiles.org/dl/1790651753.5a51ec77e10f863d/wmAAwEX9s35o/image-assets.tar.gz"
+          curl -fsSL --retry 3 --retry-delay 2 -o /tmp/image-assets.tar.gz "$URL"
+          echo "$EXPECTED_SHA256  /tmp/image-assets.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/image-assets.tar.gz
+          test -f lightpantry-github/index.html
+          test -f lightpantry-github/images/thumbs/product-07.webp
+          test -f lightpantry-github/images/full/people-13.webp
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('lightpantry-github/images/thumbs/product-07.webp')
+          magic = p.read_bytes()[:12]
+          assert magic[:4] == b'RIFF' and magic[8:12] == b'WEBP', magic
+          html = Path('lightpantry-github/index.html').read_text(encoding='utf-8')
+          assert 'photoVariants' in html and 'images/thumbs/' in html
+          print('markers ok; webp magic ok; files:', len(list(Path('lightpantry-github/images').rglob('*.*'))))
           PY
       - name: Delete probe and svg leftovers
         shell: bash
@@ -47,15 +41,15 @@ jobs:
           rm -f lightpantry-github/images/about-jonelle.svg \
                 lightpantry-github/images/_probe.txt \
                 lightpantry-github/images/_probe.bin || true
+          rm -rf lightpantry-github/.assemble || true
+          rm -f .github/workflows/assemble-image-assets.yml || true
       - name: Commit assembled assets
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          rm -rf lightpantry-github/.assemble
-          rm -f .github/workflows/assemble-image-assets.yml
           git add -A
-          git status --short | head -80
+          git status --short | head -100
           git commit -m "perf: add optimized image assets (thumbs, full webp, hero, about)"
           git push origin HEAD:cursor/image-performance-9652
