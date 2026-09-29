@@ -6,9 +6,9 @@
 #   ./scripts/optimize-images.sh images/inbox/people-21.jpg
 #
 # Writes:
-#   images/<name>.jpg          â long edge â¤1600 (lightbox / JPEG fallback)
-#   images/full/<name>.webp    â same dimensions, modern format for lightbox
-#   images/thumbs/<name>.jpg   â long edge â¤640 for gallery grid / cards
+#   images/<name>.jpg          — long edge ≤1600 (lightbox / JPEG fallback)
+#   images/full/<name>.webp    — same dimensions, modern format for lightbox
+#   images/thumbs/<name>.jpg   — long edge ≤640 for gallery grid / cards
 #   images/thumbs/<name>.webp
 #
 # Then add "images/<name>.jpg" to GALLERIES in index.html.
@@ -40,7 +40,7 @@ optimize_one() {
   convert "$work" -resize "${THUMB_EDGE}x${THUMB_EDGE}>" -quality "$THUMB_JPEG_Q" "$THUMBS/${base}.jpg"
   cwebp -quiet -q "$THUMB_WEBP_Q" "$THUMBS/${base}.jpg" -o "$THUMBS/${base}.webp"
   rm -f "$work"
-  echo "ok $base â images/${base}.jpg (+ full webp, thumbs)"
+  echo "ok $base → images/${base}.jpg (+ full webp, thumbs)"
 }
 
 if [[ $# -gt 0 ]]; then
