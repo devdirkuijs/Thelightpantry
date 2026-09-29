@@ -1,17 +1,29 @@
-# The Light Pantry — Photography Website
+# The Light Pantry — website
 
-Single-file static site for The Light Pantry photography (thelightpantry.co.za).
+Static photography site (HTML + local images). Hosted on **Netlify** (auto-deploys from `main`).
 
-## Structure
-- `index.html` — the entire website (HTML/CSS/JS in one file)
-- `images/` — all portfolio photos, referenced by the galleries
-- `netlify.toml` — tells Netlify to serve the site as-is (no build step)
+## Images (fast thumbs, sharp lightbox)
 
-## How to add a photo
-1. Add the optimised image to the `images/` folder (e.g. `people-21.jpg`)
-2. In `index.html`, find the `GALLERIES` section and add a line to the right category:
-   `"images/people-21.jpg",`
-3. Commit — Netlify auto-deploys within a minute.
+Portfolio photos live in two sizes:
 
-## Deploys
-Connected to Netlify. Every commit to `main` publishes automatically.
+| Folder | Use | Typical size |
+|--------|-----|----------------|
+| `images/thumbs/` | Gallery grid + category cards | ~640px long edge, JPEG + WebP |
+| `images/<name>.jpg` + `images/full/<name>.webp` | Lightbox / zoom | ≤1600px long edge |
+
+Also: `images/logo-hero.{jpg,webp}` (hero), `images/about-jonelle.{jpg,webp}` (about).
+
+### Add a new photo
+
+1. Put the original JPEG in `lightpantry-github/images/inbox/`
+2. From `lightpantry-github/` run: `./scripts/optimize-images.sh`
+3. In `index.html`, find `GALLERIES` and append e.g. `"images/people-21.jpg",`
+4. Commit — Netlify deploys automatically
+
+Requires ImageMagick (`convert`) and `cwebp` locally.
+
+## Netlify
+
+- Base directory: `lightpantry-github`
+- `netlify.toml` publish = `.`
+- `_headers` caches `/images/*` for 1 year; HTML revalidates immediately

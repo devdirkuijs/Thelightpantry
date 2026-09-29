@@ -1,0 +1,16 @@
+# Cache static images aggressively (filenames are content-addressed by usage; bump name on replace)
+/images/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/images/thumbs/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/images/full/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# HTML should revalidate so gallery edits go live quickly
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
