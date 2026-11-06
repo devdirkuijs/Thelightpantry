@@ -431,6 +431,11 @@
       linear-gradient(180deg, transparent 40%, rgba(60,42,30,0.55) 100%),
       radial-gradient(circle at 40% 20%, #F0E0C0 0%, #C4A574 35%, #4A3428 90%);
   }
+  .shot-f .shot-frame {
+    background:
+      linear-gradient(180deg, transparent 40%, rgba(60,42,30,0.55) 100%),
+      linear-gradient(145deg, #C8B498 0%, #7A6548 50%, #3A2C22 100%);
+  }
   /* subtle drone path arc */
   .shot-a .shot-frame::after,
   .shot-b .shot-frame::after {
@@ -797,12 +802,32 @@
         <h3 class="shot-title">Waves on the rocks</h3>
       </div>
     </article>
-    <article class="shot shot-b">
-      <div class="shot-frame"></div>
-      <span class="shot-placeholder">Placeholder</span>
+    <article class="shot shot-b has-video">
+      <div class="shot-frame">
+        <div class="shot-video-wrap" id="shotEagleWrap" aria-hidden="true">
+          <img
+            class="shot-video-poster"
+            src="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/d18a856c465d9800644d04a8407ab19e/thumbnails/thumbnail.jpg"
+            alt=""
+            width="1920"
+            height="1080"
+            decoding="async"
+            loading="lazy"
+          >
+          <video
+            class="shot-video"
+            id="shotEagleVideo"
+            muted
+            loop
+            playsinline
+            preload="none"
+            poster="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/d18a856c465d9800644d04a8407ab19e/thumbnails/thumbnail.jpg"
+          ></video>
+        </div>
+      </div>
       <div class="shot-meta">
-        <p class="shot-cat">Property</p>
-        <h3 class="shot-title">Estate overview</h3>
+        <p class="shot-cat">Site</p>
+        <h3 class="shot-title">Building from above</h3>
       </div>
     </article>
     <article class="shot shot-c has-video">
@@ -887,6 +912,34 @@
       <div class="shot-meta">
         <p class="shot-cat">Sea</p>
         <h3 class="shot-title">Sunset on still water</h3>
+      </div>
+    </article>
+    <article class="shot shot-f has-video">
+      <div class="shot-frame">
+        <div class="shot-video-wrap" id="shotSiteDetailWrap" aria-hidden="true">
+          <img
+            class="shot-video-poster"
+            src="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/3cda92dafcd75126cc45fc4f2359eef0/thumbnails/thumbnail.jpg"
+            alt=""
+            width="1080"
+            height="1440"
+            decoding="async"
+            loading="lazy"
+          >
+          <video
+            class="shot-video"
+            id="shotSiteDetailVideo"
+            muted
+            loop
+            playsinline
+            preload="none"
+            poster="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/3cda92dafcd75126cc45fc4f2359eef0/thumbnails/thumbnail.jpg"
+          ></video>
+        </div>
+      </div>
+      <div class="shot-meta">
+        <p class="shot-cat">Detail</p>
+        <h3 class="shot-title">Close on the build</h3>
       </div>
     </article>
   </div>
@@ -1094,6 +1147,11 @@
     'shotWavesWrap'
   );
   initGalleryStreamVideo(
+    'https://customer-gjmetbrg2imyqu69.cloudflarestream.com/d18a856c465d9800644d04a8407ab19e/manifest/video.m3u8',
+    'shotEagleVideo',
+    'shotEagleWrap'
+  );
+  initGalleryStreamVideo(
     'https://customer-gjmetbrg2imyqu69.cloudflarestream.com/c112e66c3887d34742b73916277cbab9/manifest/video.m3u8',
     'shotSunriseVideo',
     'shotSunriseWrap'
@@ -1107,6 +1165,11 @@
     'https://customer-gjmetbrg2imyqu69.cloudflarestream.com/32d22451cd146823123a9eff55080888/manifest/video.m3u8',
     'shotSunsetVideo',
     'shotSunsetWrap'
+  );
+  initGalleryStreamVideo(
+    'https://customer-gjmetbrg2imyqu69.cloudflarestream.com/3cda92dafcd75126cc45fc4f2359eef0/manifest/video.m3u8',
+    'shotSiteDetailVideo',
+    'shotSiteDetailWrap'
   );
 </script>
 </body>
