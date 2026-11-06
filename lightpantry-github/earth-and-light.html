@@ -388,6 +388,29 @@
       linear-gradient(180deg, transparent 40%, rgba(60,42,30,0.55) 100%),
       linear-gradient(135deg, #C9B896 0%, #8B7355 40%, #4A3A2C 100%);
   }
+  .shot.has-video .shot-frame {
+    background: #1a1410;
+  }
+  .shot.has-video .shot-frame::after { display: none; }
+  .shot.has-video .shot-frame::before {
+    content: '';
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(180deg, transparent 42%, rgba(26, 20, 16, 0.62) 100%);
+  }
+  .shot-video-wrap {
+    position: absolute; inset: 0; z-index: 0;
+    overflow: hidden; background: #1a1410;
+  }
+  .shot-video,
+  .shot-video-poster {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center center;
+  }
+  .shot-video { z-index: 1; }
+  .shot-video-poster { z-index: 0; }
+  .shot-video-wrap.is-playing .shot-video-poster { opacity: 0; transition: opacity 0.8s ease; }
   .shot-b .shot-frame {
     background:
       linear-gradient(180deg, transparent 45%, rgba(60,42,30,0.5) 100%),
@@ -585,6 +608,8 @@
     .hero-scroll-line::after { animation: none; }
     .hero-video { display: none !important; }
     .hero-video-wrap.is-playing .hero-video-poster { opacity: 1; }
+    .shot-video { display: none !important; }
+    .shot-video-wrap.is-playing .shot-video-poster { opacity: 1; }
     .shot:hover .shot-frame { transform: none; }
   }
 
@@ -744,12 +769,32 @@
     <p class="gallery-hint">Placeholder atmospheres for the mockup — drone stills will land here as the portfolio grows.</p>
   </div>
   <div class="gallery-grid reveal">
-    <article class="shot shot-a">
-      <div class="shot-frame"></div>
-      <span class="shot-placeholder">Placeholder</span>
+    <article class="shot shot-a has-video">
+      <div class="shot-frame">
+        <div class="shot-video-wrap" id="shotWavesWrap" aria-hidden="true">
+          <img
+            class="shot-video-poster"
+            src="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/5e37d34fb95beffc1b1cd5c10ec52656/thumbnails/thumbnail.jpg"
+            alt=""
+            width="1280"
+            height="720"
+            decoding="async"
+            loading="lazy"
+          >
+          <video
+            class="shot-video"
+            id="shotWavesVideo"
+            muted
+            loop
+            playsinline
+            preload="none"
+            poster="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/5e37d34fb95beffc1b1cd5c10ec52656/thumbnails/thumbnail.jpg"
+          ></video>
+        </div>
+      </div>
       <div class="shot-meta">
-        <p class="shot-cat">Landscape</p>
-        <h3 class="shot-title">Ridge at golden hour</h3>
+        <p class="shot-cat">Coast</p>
+        <h3 class="shot-title">Waves on the rocks</h3>
       </div>
     </article>
     <article class="shot shot-b">
@@ -913,6 +958,49 @@
       hls.attachMedia(video);
       hls.on(Hls.Events.MANIFEST_PARSED, tryPlay);
     }
+  })();
+
+  (function initGalleryWavesVideo() {
+    const STREAM_HLS = 'https://customer-gjmetbrg2imyqu69.cloudflarestream.com/5e37d34fb95beffc1b1cd5c10ec52656/manifest/video.m3u8';
+    const video = document.getElementById('shotWavesVideo');
+    const wrap = document.getElementById('shotWavesWrap');
+    if (!video || !wrap) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const tryPlay = () => {
+      const playPromise = video.play();
+      if (playPromise && typeof playPromise.catch === 'function') playPromise.catch(() => {});
+    };
+
+    let attached = false;
+    const attach = () => {
+      if (attached) return;
+      attached = true;
+      video.addEventListener('playing', () => wrap.classList.add('is-playing'), { once: true });
+      if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = STREAM_HLS;
+        video.addEventListener('loadedmetadata', tryPlay, { once: true });
+        return;
+      }
+      if (window.Hls && Hls.isSupported()) {
+        const hls = new Hls({ enableWorker: true, lowLatencyMode: false });
+        hls.loadSource(STREAM_HLS);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, tryPlay);
+      }
+    };
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          attach();
+          tryPlay();
+        } else if (attached) {
+          video.pause();
+        }
+      });
+    }, { threshold: 0.2, rootMargin: '80px 0px' });
+    io.observe(wrap);
   })();
 </script>
 </body>
