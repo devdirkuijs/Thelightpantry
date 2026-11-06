@@ -805,12 +805,32 @@
         <h3 class="shot-title">Estate overview</h3>
       </div>
     </article>
-    <article class="shot shot-c">
-      <div class="shot-frame"></div>
-      <span class="shot-placeholder">Placeholder</span>
+    <article class="shot shot-c has-video">
+      <div class="shot-frame">
+        <div class="shot-video-wrap" id="shotSunriseWrap" aria-hidden="true">
+          <img
+            class="shot-video-poster"
+            src="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/c112e66c3887d34742b73916277cbab9/thumbnails/thumbnail.jpg"
+            alt=""
+            width="1280"
+            height="720"
+            decoding="async"
+            loading="lazy"
+          >
+          <video
+            class="shot-video"
+            id="shotSunriseVideo"
+            muted
+            loop
+            playsinline
+            preload="none"
+            poster="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/c112e66c3887d34742b73916277cbab9/thumbnails/thumbnail.jpg"
+          ></video>
+        </div>
+      </div>
       <div class="shot-meta">
-        <p class="shot-cat">Story</p>
-        <h3 class="shot-title">River bend</h3>
+        <p class="shot-cat">Field</p>
+        <h3 class="shot-title">Rising into morning light</h3>
       </div>
     </article>
     <article class="shot shot-d has-video">
@@ -973,6 +993,84 @@
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+  // Prefer the top HLS rung when possible. Native Safari ABR still cannot exceed
+  // what Stream encoded for each UID (several assets currently max at 480p).
+  const STREAM_HLS_CONFIG = {
+    enableWorker: true,
+    lowLatencyMode: false,
+    startLevel: -1,
+    capLevelToPlayerSize: false,
+    maxBufferLength: 30,
+    abrEwmaDefaultEstimate: 8e6,
+    abrBandWidthUpFactor: 0.7,
+    abrBandWidthFactor: 0.95
+  };
+
+  function preferHighestHlsLevel(hls, levels) {
+    if (!levels || !levels.length) return;
+    let best = 0;
+    for (let i = 1; i < levels.length; i++) {
+      const a = levels[i];
+      const b = levels[best];
+      const ah = a.height || 0;
+      const bh = b.height || 0;
+      if (ah > bh || (ah === bh && (a.bitrate || 0) > (b.bitrate || 0))) best = i;
+    }
+    hls.startLevel = best;
+    hls.currentLevel = best;
+    hls.nextLevel = best;
+    hls.loadLevel = best;
+  }
+
+  function attachStreamSource(video, streamUrl, onReady) {
+    if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = streamUrl;
+      video.addEventListener('loadedmetadata', onReady, { once: true });
+      return;
+    }
+    if (window.Hls && Hls.isSupported()) {
+      const hls = new Hls(STREAM_HLS_CONFIG);
+      hls.loadSource(streamUrl);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, (_event, data) => {
+        preferHighestHlsLevel(hls, (data && data.levels) || hls.levels || []);
+        onReady();
+      });
+    }
+  }
+
+  function initGalleryStreamVideo(streamUrl, videoId, wrapId) {
+    const video = document.getElementById(videoId);
+    const wrap = document.getElementById(wrapId);
+    if (!video || !wrap) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const tryPlay = () => {
+      const playPromise = video.play();
+      if (playPromise && typeof playPromise.catch === 'function') playPromise.catch(() => {});
+    };
+
+    let attached = false;
+    const attach = () => {
+      if (attached) return;
+      attached = true;
+      video.addEventListener('playing', () => wrap.classList.add('is-playing'), { once: true });
+      attachStreamSource(video, streamUrl, tryPlay);
+    };
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          attach();
+          tryPlay();
+        } else if (attached) {
+          video.pause();
+        }
+      });
+    }, { threshold: 0.2, rootMargin: '80px 0px' });
+    io.observe(wrap);
+  }
+
   (function initHeroVideo() {
     const STREAM_HLS = 'https://customer-gjmetbrg2imyqu69.cloudflarestream.com/102da71ed6ce9ec4e40b1274d61b7b04/manifest/video.m3u8';
     const video = document.getElementById('heroVideo');
@@ -987,147 +1085,29 @@
       if (playPromise && typeof playPromise.catch === 'function') playPromise.catch(() => {});
     };
 
-    if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = STREAM_HLS;
-      video.addEventListener('loadedmetadata', tryPlay, { once: true });
-      return;
-    }
-    if (window.Hls && Hls.isSupported()) {
-      const hls = new Hls({ enableWorker: true, lowLatencyMode: false });
-      hls.loadSource(STREAM_HLS);
-      hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED, tryPlay);
-    }
+    attachStreamSource(video, STREAM_HLS, tryPlay);
   })();
 
-  (function initGalleryWavesVideo() {
-    const STREAM_HLS = 'https://customer-gjmetbrg2imyqu69.cloudflarestream.com/5e37d34fb95beffc1b1cd5c10ec52656/manifest/video.m3u8';
-    const video = document.getElementById('shotWavesVideo');
-    const wrap = document.getElementById('shotWavesWrap');
-    if (!video || !wrap) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    const tryPlay = () => {
-      const playPromise = video.play();
-      if (playPromise && typeof playPromise.catch === 'function') playPromise.catch(() => {});
-    };
-
-    let attached = false;
-    const attach = () => {
-      if (attached) return;
-      attached = true;
-      video.addEventListener('playing', () => wrap.classList.add('is-playing'), { once: true });
-      if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = STREAM_HLS;
-        video.addEventListener('loadedmetadata', tryPlay, { once: true });
-        return;
-      }
-      if (window.Hls && Hls.isSupported()) {
-        const hls = new Hls({ enableWorker: true, lowLatencyMode: false });
-        hls.loadSource(STREAM_HLS);
-        hls.attachMedia(video);
-        hls.on(Hls.Events.MANIFEST_PARSED, tryPlay);
-      }
-    };
-
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          attach();
-          tryPlay();
-        } else if (attached) {
-          video.pause();
-        }
-      });
-    }, { threshold: 0.2, rootMargin: '80px 0px' });
-    io.observe(wrap);
-  })();
-
-  (function initGalleryGatheringVideo() {
-    const STREAM_HLS = 'https://customer-gjmetbrg2imyqu69.cloudflarestream.com/9e69fc4282d50daa503887463424b393/manifest/video.m3u8';
-    const video = document.getElementById('shotGatheringVideo');
-    const wrap = document.getElementById('shotGatheringWrap');
-    if (!video || !wrap) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    const tryPlay = () => {
-      const playPromise = video.play();
-      if (playPromise && typeof playPromise.catch === 'function') playPromise.catch(() => {});
-    };
-
-    let attached = false;
-    const attach = () => {
-      if (attached) return;
-      attached = true;
-      video.addEventListener('playing', () => wrap.classList.add('is-playing'), { once: true });
-      if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = STREAM_HLS;
-        video.addEventListener('loadedmetadata', tryPlay, { once: true });
-        return;
-      }
-      if (window.Hls && Hls.isSupported()) {
-        const hls = new Hls({ enableWorker: true, lowLatencyMode: false });
-        hls.loadSource(STREAM_HLS);
-        hls.attachMedia(video);
-        hls.on(Hls.Events.MANIFEST_PARSED, tryPlay);
-      }
-    };
-
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          attach();
-          tryPlay();
-        } else if (attached) {
-          video.pause();
-        }
-      });
-    }, { threshold: 0.2, rootMargin: '80px 0px' });
-    io.observe(wrap);
-  })();
-
-  (function initGallerySunsetVideo() {
-    const STREAM_HLS = 'https://customer-gjmetbrg2imyqu69.cloudflarestream.com/32d22451cd146823123a9eff55080888/manifest/video.m3u8';
-    const video = document.getElementById('shotSunsetVideo');
-    const wrap = document.getElementById('shotSunsetWrap');
-    if (!video || !wrap) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    const tryPlay = () => {
-      const playPromise = video.play();
-      if (playPromise && typeof playPromise.catch === 'function') playPromise.catch(() => {});
-    };
-
-    let attached = false;
-    const attach = () => {
-      if (attached) return;
-      attached = true;
-      video.addEventListener('playing', () => wrap.classList.add('is-playing'), { once: true });
-      if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = STREAM_HLS;
-        video.addEventListener('loadedmetadata', tryPlay, { once: true });
-        return;
-      }
-      if (window.Hls && Hls.isSupported()) {
-        const hls = new Hls({ enableWorker: true, lowLatencyMode: false });
-        hls.loadSource(STREAM_HLS);
-        hls.attachMedia(video);
-        hls.on(Hls.Events.MANIFEST_PARSED, tryPlay);
-      }
-    };
-
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          attach();
-          tryPlay();
-        } else if (attached) {
-          video.pause();
-        }
-      });
-    }, { threshold: 0.2, rootMargin: '80px 0px' });
-    io.observe(wrap);
-  })();
+  initGalleryStreamVideo(
+    'https://customer-gjmetbrg2imyqu69.cloudflarestream.com/5e37d34fb95beffc1b1cd5c10ec52656/manifest/video.m3u8',
+    'shotWavesVideo',
+    'shotWavesWrap'
+  );
+  initGalleryStreamVideo(
+    'https://customer-gjmetbrg2imyqu69.cloudflarestream.com/c112e66c3887d34742b73916277cbab9/manifest/video.m3u8',
+    'shotSunriseVideo',
+    'shotSunriseWrap'
+  );
+  initGalleryStreamVideo(
+    'https://customer-gjmetbrg2imyqu69.cloudflarestream.com/9e69fc4282d50daa503887463424b393/manifest/video.m3u8',
+    'shotGatheringVideo',
+    'shotGatheringWrap'
+  );
+  initGalleryStreamVideo(
+    'https://customer-gjmetbrg2imyqu69.cloudflarestream.com/32d22451cd146823123a9eff55080888/manifest/video.m3u8',
+    'shotSunsetVideo',
+    'shotSunsetWrap'
+  );
 </script>
 </body>
 </html>
