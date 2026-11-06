@@ -117,6 +117,18 @@
   }
   .nav-links a:hover { color:var(--rose); }
   .nav-links a:hover::after { transform:scaleX(1); }
+  .nav-sister {
+    font-size: 9px !important;
+    letter-spacing: 0.14em !important;
+    color: var(--dusty) !important;
+    border: 1px solid rgba(176,112,112,0.22);
+    padding: 7px 12px;
+  }
+  .nav-sister::after { display: none !important; }
+  .nav-sister:hover {
+    color: var(--rose-deep) !important;
+    background: rgba(242,200,192,0.25);
+  }
 
   /* ── HERO ── */
   #hero {
@@ -1090,6 +1102,7 @@
     <li><a href="#services">Services</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="tel:+27832285174" style="color:var(--rose)">083 228 5174</a></li>
+    <li><a href="earth-and-light.html" class="nav-sister">Earth &amp; Light</a></li>
   </ul>
   <button class="nav-burger" id="navBurger" onclick="toggleMenu()" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -1102,6 +1115,7 @@
   <a href="#portfolio" onclick="closeMenu()">Portfolio</a>
   <a href="#services" onclick="closeMenu()">Services</a>
   <a href="#contact" onclick="closeMenu()">Contact</a>
+  <a href="earth-and-light.html" onclick="closeMenu()">Earth &amp; Light</a>
   <a href="tel:+27832285174" class="drawer-contact" onclick="closeMenu()">083 228 5174</a>
 </div>
 
@@ -1486,6 +1500,7 @@
     <li><a href="#portfolio">Portfolio</a></li>
     <li><a href="#services">Services</a></li>
     <li><a href="#contact">Contact</a></li>
+    <li><a href="earth-and-light.html">Earth &amp; Light</a></li>
     <li><a href="https://www.instagram.com/the_light_pantry" target="_blank">Instagram</a></li>
   </ul>
 </footer>
