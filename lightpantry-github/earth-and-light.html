@@ -902,16 +902,44 @@
       if (playPromise && typeof playPromise.catch === 'function') playPromise.catch(() => {});
     };
 
+    // Prefer the top HLS rung when possible. Native Safari ABR still cannot exceed
+    // what Stream encoded for this UID (currently max 852×480).
     if (video.canPlayType('application/vnd.apple.mpegurl')) {
       video.src = STREAM_HLS;
       video.addEventListener('loadedmetadata', tryPlay, { once: true });
       return;
     }
     if (window.Hls && Hls.isSupported()) {
-      const hls = new Hls({ enableWorker: true, lowLatencyMode: false });
+      const hls = new Hls({
+        enableWorker: true,
+        lowLatencyMode: false,
+        startLevel: -1,
+        capLevelToPlayerSize: false,
+        maxBufferLength: 30,
+        abrEwmaDefaultEstimate: 8e6,
+        abrBandWidthUpFactor: 0.7,
+        abrBandWidthFactor: 0.95
+      });
       hls.loadSource(STREAM_HLS);
       hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED, tryPlay);
+      hls.on(Hls.Events.MANIFEST_PARSED, (_event, data) => {
+        const levels = (data && data.levels) || hls.levels || [];
+        if (levels.length) {
+          let best = 0;
+          for (let i = 1; i < levels.length; i++) {
+            const a = levels[i];
+            const b = levels[best];
+            const ah = a.height || 0;
+            const bh = b.height || 0;
+            if (ah > bh || (ah === bh && (a.bitrate || 0) > (b.bitrate || 0))) best = i;
+          }
+          hls.startLevel = best;
+          hls.currentLevel = best;
+          hls.nextLevel = best;
+          hls.loadLevel = best;
+        }
+        tryPlay();
+      });
     }
   })();
 </script>
