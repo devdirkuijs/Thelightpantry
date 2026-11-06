@@ -813,12 +813,32 @@
         <h3 class="shot-title">River bend</h3>
       </div>
     </article>
-    <article class="shot shot-d">
-      <div class="shot-frame"></div>
-      <span class="shot-placeholder">Placeholder</span>
+    <article class="shot shot-d has-video">
+      <div class="shot-frame">
+        <div class="shot-video-wrap" id="shotGatheringWrap" aria-hidden="true">
+          <img
+            class="shot-video-poster"
+            src="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/9e69fc4282d50daa503887463424b393/thumbnails/thumbnail.jpg"
+            alt=""
+            width="1280"
+            height="720"
+            decoding="async"
+            loading="lazy"
+          >
+          <video
+            class="shot-video"
+            id="shotGatheringVideo"
+            muted
+            loop
+            playsinline
+            preload="none"
+            poster="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/9e69fc4282d50daa503887463424b393/thumbnails/thumbnail.jpg"
+          ></video>
+        </div>
+      </div>
       <div class="shot-meta">
-        <p class="shot-cat">Events</p>
-        <h3 class="shot-title">Gathering from air</h3>
+        <p class="shot-cat">People</p>
+        <h3 class="shot-title">Couple &amp; baby from above</h3>
       </div>
     </article>
     <article class="shot shot-e">
@@ -964,6 +984,49 @@
     const STREAM_HLS = 'https://customer-gjmetbrg2imyqu69.cloudflarestream.com/5e37d34fb95beffc1b1cd5c10ec52656/manifest/video.m3u8';
     const video = document.getElementById('shotWavesVideo');
     const wrap = document.getElementById('shotWavesWrap');
+    if (!video || !wrap) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const tryPlay = () => {
+      const playPromise = video.play();
+      if (playPromise && typeof playPromise.catch === 'function') playPromise.catch(() => {});
+    };
+
+    let attached = false;
+    const attach = () => {
+      if (attached) return;
+      attached = true;
+      video.addEventListener('playing', () => wrap.classList.add('is-playing'), { once: true });
+      if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = STREAM_HLS;
+        video.addEventListener('loadedmetadata', tryPlay, { once: true });
+        return;
+      }
+      if (window.Hls && Hls.isSupported()) {
+        const hls = new Hls({ enableWorker: true, lowLatencyMode: false });
+        hls.loadSource(STREAM_HLS);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, tryPlay);
+      }
+    };
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          attach();
+          tryPlay();
+        } else if (attached) {
+          video.pause();
+        }
+      });
+    }, { threshold: 0.2, rootMargin: '80px 0px' });
+    io.observe(wrap);
+  })();
+
+  (function initGalleryGatheringVideo() {
+    const STREAM_HLS = 'https://customer-gjmetbrg2imyqu69.cloudflarestream.com/9e69fc4282d50daa503887463424b393/manifest/video.m3u8';
+    const video = document.getElementById('shotGatheringVideo');
+    const wrap = document.getElementById('shotGatheringWrap');
     if (!video || !wrap) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
