@@ -67,10 +67,20 @@
     text-decoration: none; line-height: 1;
   }
   .nav-logo-mark {
-    width: 36px; height: 18px; color: var(--chocolate);
-    flex-shrink: 0; transition: color 0.35s;
+    position: relative;
+    width: 40px; height: 18px;
+    flex-shrink: 0;
   }
-  .nav-logo-mark svg { width: 100%; height: 100%; display: block; }
+  .nav-logo-mark img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: contain;
+    object-position: left center;
+    display: block;
+  }
+  .nav-logo-mark .mark-on-dark { opacity: 0; }
+  nav:not(.scrolled) .nav-logo-mark .mark-on-light { opacity: 0; }
+  nav:not(.scrolled) .nav-logo-mark .mark-on-dark { opacity: 1; }
   .nav-logo-text {
     display: flex; flex-direction: column; align-items: flex-start; gap: 3px;
   }
@@ -138,7 +148,6 @@
   .nav-sister:hover { color: var(--chocolate) !important; }
 
   /* Light nav over full-bleed video hero */
-  nav:not(.scrolled) .nav-logo-mark { color: var(--ivory); }
   nav:not(.scrolled) .nav-logo-main { color: var(--ivory); }
   nav:not(.scrolled) .nav-logo-sub { color: rgba(244, 240, 230, 0.72); }
   nav:not(.scrolled) .nav-links a { color: rgba(244, 240, 230, 0.78); }
@@ -248,12 +257,13 @@
     to   { transform: translateY(0); filter: blur(0); }
   }
   .hero-mark {
-    width: min(72px, 18vw);
-    color: var(--sandstone);
+    width: min(88px, 22vw);
     margin-bottom: 22px;
     filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.35));
   }
-  .hero-mark svg { width: 100%; height: auto; display: block; }
+  .hero-mark img {
+    width: 100%; height: auto; display: block;
+  }
   .hero-brand {
     font-family: 'Cormorant Garamond', serif;
     font-size: clamp(28px, 5vw, 48px);
@@ -842,7 +852,8 @@
 <nav id="navbar">
   <a href="#hero" class="nav-logo">
     <span class="nav-logo-mark" aria-hidden="true">
-      <svg viewBox="0 0 120 56" fill="none"><path d="M28 36c0-15.464 12.536-28 28-28s28 12.536 28 28" fill="currentColor" opacity="0.92"/><path d="M8 40 L72 36 L68 42 L12 44 Z" fill="currentColor" opacity="0.55"/><path d="M48 42 L112 38 L112 46 L52 48 Z" fill="currentColor" opacity="0.88"/></svg>
+      <img class="mark-on-light" src="images/earth-and-light/mark.svg" alt="" width="160" height="72" decoding="async">
+      <img class="mark-on-dark" src="images/earth-and-light/mark-on-dark.svg" alt="" width="160" height="72" decoding="async">
     </span>
     <span class="nav-logo-text">
       <span class="nav-logo-main">Earth <span class="amp">&amp;</span> Light</span>
@@ -900,7 +911,7 @@
   <div class="hero-grain" aria-hidden="true"></div>
   <div class="hero-inner">
     <div class="hero-mark" aria-hidden="true">
-      <svg viewBox="0 0 120 56" fill="none"><path d="M28 36c0-15.464 12.536-28 28-28s28 12.536 28 28" fill="currentColor" opacity="0.92"/><path d="M8 40 L72 36 L68 42 L12 44 Z" fill="currentColor" opacity="0.55"/><path d="M48 42 L112 38 L112 46 L52 48 Z" fill="currentColor" opacity="0.88"/></svg>
+      <img src="images/earth-and-light/mark-on-dark.svg" alt="" width="160" height="72" decoding="async">
     </div>
     <p class="hero-brand">Earth <span class="amp">&amp;</span> Light</p>
     <p class="hero-brand-sub">Visual Studio</p>
