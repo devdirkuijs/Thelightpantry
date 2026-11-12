@@ -3,31 +3,38 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Earth &amp; Light — Drone Photography</title>
-<meta name="description" content="Earth &amp; Light — aerial and drone photography by D.C. Uijs, in collaboration with The Light Pantry. Landscapes, property, events &amp; story from above.">
+<title>Earth &amp; Light — Visual Studio</title>
+<meta name="description" content="Earth &amp; Light Visual Studio — aerial photography by D.C. Uijs, in collaboration with The Light Pantry. Nature, commercial sites, events &amp; story from above.">
 <link rel="canonical" href="https://thelightpantry.co.za/earth-and-light.html">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://thelightpantry.co.za/earth-and-light.html">
-<meta property="og:title" content="Earth &amp; Light — Drone Photography">
-<meta property="og:description" content="Aerial and drone photography by D.C. Uijs, alongside The Light Pantry.">
+<meta property="og:title" content="Earth &amp; Light — Visual Studio">
+<meta property="og:description" content="Aerial photography by D.C. Uijs, alongside The Light Pantry. Grounded in detail. Elevated by perspective.">
 <meta property="og:image" content="https://thelightpantry.co.za/images/earth-and-light/logo-hero.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="images/favicon.svg">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --cream:       #F4EFE6;
-    --cream-deep:  #E8DFD0;
+    /* Brand kit: Ivory / Sandstone / Taupe / Olive / Charcoal */
+    --ivory:       #F4F0E6;
+    --sandstone:   #C9B89A;
+    --taupe:       #8A7D6F;
+    --olive:       #3A3F2D;
+    --olive-deep:  #2E3224;
+    --charcoal:    #1A1917;
+    --cream:       var(--ivory);
+    --cream-deep:  #E6DFD2;
     --parchment:   #FAF7F1;
-    --chocolate:   #3C2A1E;
-    --chocolate-soft: #5A4434;
-    --text-muted:  #8A7360;
-    --gold:        #C4A574;
-    --gold-deep:   #A8844E;
-    --tan:         #D4C0A0;
-    --earth:       #6B5344;
-    --line:        rgba(60, 42, 30, 0.12);
+    --chocolate:   var(--charcoal);
+    --chocolate-soft: #3F3C37;
+    --text-muted:  var(--taupe);
+    --gold:        var(--sandstone);
+    --gold-deep:   #A89478;
+    --tan:         #D4C8B4;
+    --earth:       var(--olive);
+    --line:        rgba(26, 25, 23, 0.12);
     --white:       #FFFcf7;
   }
 
@@ -50,34 +57,47 @@
     transition: background 0.4s, padding 0.4s, box-shadow 0.4s;
   }
   nav.scrolled {
-    background: rgba(244, 239, 230, 0.96);
+    background: rgba(244, 240, 230, 0.96);
     backdrop-filter: blur(12px);
-    padding: 16px 64px;
+    padding: 14px 64px;
     box-shadow: 0 1px 0 var(--line);
   }
   .nav-logo {
-    display: flex; flex-direction: column; align-items: flex-start;
-    text-decoration: none; line-height: 1; gap: 2px;
+    display: flex; align-items: center; gap: 12px;
+    text-decoration: none; line-height: 1;
+  }
+  .nav-logo-mark {
+    width: 36px; height: 18px; color: var(--chocolate);
+    flex-shrink: 0; transition: color 0.35s;
+  }
+  .nav-logo-mark svg { width: 100%; height: 100%; display: block; }
+  .nav-logo-text {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 3px;
   }
   .nav-logo-main {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 22px; font-weight: 400;
-    letter-spacing: 0.2em; text-transform: uppercase;
+    font-size: 20px; font-weight: 400;
+    letter-spacing: 0.18em; text-transform: uppercase;
     color: var(--chocolate);
     transition: color 0.35s;
   }
   .nav-logo-main .amp {
-    font-family: 'Great Vibes', cursive;
-    font-size: 1.15em; letter-spacing: 0;
-    color: var(--gold-deep);
-    text-transform: none;
-    padding: 0 0.08em;
+    letter-spacing: 0.08em;
+    padding: 0 0.04em;
   }
   .nav-logo-sub {
-    font-size: 8px; letter-spacing: 0.45em;
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 8px; letter-spacing: 0.38em;
     text-transform: uppercase; color: var(--text-muted);
     font-weight: 500;
     transition: color 0.35s;
+  }
+  .nav-logo-sub::before,
+  .nav-logo-sub::after {
+    content: '';
+    width: 14px; height: 1px;
+    background: currentColor;
+    opacity: 0.55;
   }
   .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
   .nav-links a {
@@ -94,33 +114,47 @@
   }
   .nav-links a:hover { color: var(--chocolate); }
   .nav-links a:hover::after { transform: scaleX(1); }
+  .nav-enquire {
+    font-size: 9px !important;
+    letter-spacing: 0.2em !important;
+    color: var(--chocolate) !important;
+    border: 1px solid rgba(26, 25, 23, 0.35);
+    padding: 9px 16px;
+  }
+  .nav-enquire::after { display: none !important; }
+  .nav-enquire:hover {
+    background: var(--olive);
+    border-color: var(--olive);
+    color: var(--ivory) !important;
+  }
   .nav-sister {
     font-size: 9px !important;
     letter-spacing: 0.16em !important;
-    color: var(--gold-deep) !important;
-    border: 1px solid rgba(168, 132, 78, 0.35);
-    padding: 8px 14px;
+    color: var(--taupe) !important;
+    border: none;
+    padding: 0;
   }
   .nav-sister::after { display: none !important; }
-  .nav-sister:hover {
-    background: rgba(196, 165, 116, 0.15);
-    color: var(--chocolate) !important;
-  }
+  .nav-sister:hover { color: var(--chocolate) !important; }
 
   /* Light nav over full-bleed video hero */
-  nav:not(.scrolled) .nav-logo-main { color: var(--parchment); }
-  nav:not(.scrolled) .nav-logo-sub { color: rgba(250, 247, 241, 0.72); }
-  nav:not(.scrolled) .nav-links a { color: rgba(250, 247, 241, 0.78); }
-  nav:not(.scrolled) .nav-links a:hover { color: var(--parchment); }
-  nav:not(.scrolled) .nav-sister {
-    color: var(--gold) !important;
-    border-color: rgba(196, 165, 116, 0.55);
+  nav:not(.scrolled) .nav-logo-mark { color: var(--ivory); }
+  nav:not(.scrolled) .nav-logo-main { color: var(--ivory); }
+  nav:not(.scrolled) .nav-logo-sub { color: rgba(244, 240, 230, 0.72); }
+  nav:not(.scrolled) .nav-links a { color: rgba(244, 240, 230, 0.78); }
+  nav:not(.scrolled) .nav-links a:hover { color: var(--ivory); }
+  nav:not(.scrolled) .nav-enquire {
+    color: var(--ivory) !important;
+    border-color: rgba(244, 240, 230, 0.55);
   }
-  nav:not(.scrolled) .nav-sister:hover {
-    background: rgba(196, 165, 116, 0.18);
-    color: var(--parchment) !important;
+  nav:not(.scrolled) .nav-enquire:hover {
+    background: var(--ivory);
+    border-color: var(--ivory);
+    color: var(--charcoal) !important;
   }
-  nav:not(.scrolled) .nav-burger span { background: var(--parchment); }
+  nav:not(.scrolled) .nav-sister { color: rgba(244, 240, 230, 0.7) !important; }
+  nav:not(.scrolled) .nav-sister:hover { color: var(--ivory) !important; }
+  nav:not(.scrolled) .nav-burger span { background: var(--ivory); }
 
   .nav-burger {
     display: none; flex-direction: column; gap: 5px;
@@ -195,12 +229,11 @@
   .hero-scrim {
     position: absolute; inset: 0; z-index: 2; pointer-events: none;
     background:
-      linear-gradient(180deg, rgba(18, 13, 10, 0.62) 0%, rgba(18, 13, 10, 0.22) 38%, rgba(18, 13, 10, 0.34) 58%, rgba(18, 13, 10, 0.72) 100%),
-      radial-gradient(ellipse 78% 60% at 50% 40%, rgba(196, 165, 116, 0.18) 0%, transparent 70%),
-      radial-gradient(ellipse 90% 70% at 50% 100%, rgba(18, 13, 10, 0.45) 0%, transparent 55%);
+      linear-gradient(180deg, rgba(46, 50, 36, 0.55) 0%, rgba(26, 25, 23, 0.2) 40%, rgba(26, 25, 23, 0.35) 62%, rgba(26, 25, 23, 0.72) 100%),
+      radial-gradient(ellipse 78% 60% at 50% 40%, rgba(201, 184, 154, 0.14) 0%, transparent 70%);
   }
   .hero-grain {
-    position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0.055;
+    position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0.045;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
   .hero-inner {
@@ -208,49 +241,79 @@
     display: flex; flex-direction: column; align-items: center;
     text-align: center;
     animation: heroRise 1.1s ease both;
+    max-width: 720px;
   }
   @keyframes heroRise {
     from { transform: translateY(22px); filter: blur(2px); }
     to   { transform: translateY(0); filter: blur(0); }
   }
-  .hero-inner > picture {
-    display: block;
-    width: min(280px, 52vw);
+  .hero-mark {
+    width: min(72px, 18vw);
+    color: var(--sandstone);
+    margin-bottom: 22px;
+    filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.35));
+  }
+  .hero-mark svg { width: 100%; height: auto; display: block; }
+  .hero-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ivory);
+    margin-bottom: 10px;
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
+  }
+  .hero-brand-sub {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 10px; letter-spacing: 0.4em; text-transform: uppercase;
+    color: rgba(244, 240, 230, 0.72); font-weight: 500;
     margin-bottom: 28px;
   }
-  .hero-logo-img {
-    width: 100%; height: auto; display: block;
-    border-radius: 50%;
-    filter: drop-shadow(0 22px 48px rgba(0, 0, 0, 0.45));
-    animation: floatY 7s ease-in-out infinite;
-  }
-  @keyframes floatY {
-    0%, 100% { transform: translateY(0); }
-    50%      { transform: translateY(-10px); }
+  .hero-brand-sub::before,
+  .hero-brand-sub::after {
+    content: ''; width: 28px; height: 1px;
+    background: currentColor; opacity: 0.6;
   }
   .hero-tagline {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(28px, 4.2vw, 48px);
+    font-size: clamp(26px, 3.8vw, 42px);
     font-weight: 300; font-style: italic;
-    line-height: 1.18; color: var(--parchment);
-    margin-bottom: 16px; max-width: 16ch;
+    line-height: 1.2; color: var(--ivory);
+    margin-bottom: 16px; max-width: 18ch;
     text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
   }
   .hero-support {
     font-size: 13px; font-weight: 400; line-height: 1.65;
-    color: rgba(250, 247, 241, 0.78); max-width: 36ch;
-    margin-bottom: 30px; letter-spacing: 0.02em;
+    color: rgba(244, 240, 230, 0.78); max-width: 38ch;
+    margin-bottom: 32px; letter-spacing: 0.02em;
+  }
+  .hero-actions {
+    display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;
   }
   .hero-cta {
     display: inline-flex; align-items: center; gap: 14px;
-    font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
-    color: var(--chocolate); text-decoration: none; font-weight: 600;
-    background: var(--parchment);
-    padding: 15px 36px; border-radius: 2px;
+    font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--charcoal); text-decoration: none; font-weight: 600;
+    background: var(--ivory);
+    padding: 15px 32px; border-radius: 0;
+    border: 1px solid var(--ivory);
     transition: background 0.3s, gap 0.3s, transform 0.2s, color 0.3s;
   }
-  .hero-cta:hover { background: var(--gold); gap: 20px; transform: translateY(-2px); }
+  .hero-cta:hover { background: var(--sandstone); border-color: var(--sandstone); gap: 18px; transform: translateY(-2px); }
   .hero-cta::after { content: '→'; font-size: 14px; }
+  .hero-cta-ghost {
+    display: inline-flex; align-items: center;
+    font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--ivory); text-decoration: none; font-weight: 500;
+    padding: 14px 28px; border-radius: 0;
+    border: 1px solid rgba(244, 240, 230, 0.55);
+    transition: background 0.25s, border-color 0.25s;
+  }
+  .hero-cta-ghost:hover {
+    background: rgba(244, 240, 230, 0.1);
+    border-color: var(--ivory);
+  }
 
   .hero-scroll {
     position: absolute; left: 50%; transform: translateX(-50%);
@@ -264,7 +327,7 @@
   }
   .hero-scroll-line::after {
     content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%;
-    background: var(--gold);
+    background: var(--sandstone);
     animation: scrollPulse 1.8s ease-in-out infinite;
   }
   @keyframes scrollPulse {
@@ -316,14 +379,14 @@
     position: relative;
     overflow: hidden;
     background:
-      linear-gradient(160deg, #D9C9AE 0%, #B8956A 38%, #6B5344 72%, #3C2A1E 100%);
+      linear-gradient(160deg, #C9B89A 0%, #8A7D6F 38%, #3A3F2D 72%, #1A1917 100%);
   }
   .about-visual::before {
     content: '';
     position: absolute; inset: 0;
     background:
-      radial-gradient(circle at 70% 30%, rgba(255, 236, 190, 0.45) 0%, transparent 42%),
-      linear-gradient(to top, rgba(60, 42, 30, 0.35), transparent 50%);
+      radial-gradient(circle at 70% 30%, rgba(244, 240, 230, 0.28) 0%, transparent 42%),
+      linear-gradient(to top, rgba(26, 25, 23, 0.4), transparent 50%);
   }
   .about-visual-mark {
     position: absolute; inset: 0;
@@ -480,9 +543,9 @@
     position: relative;
     overflow: hidden;
     background:
-      radial-gradient(ellipse 90% 70% at 8% 12%, rgba(196, 165, 116, 0.16) 0%, transparent 55%),
-      radial-gradient(ellipse 70% 55% at 92% 88%, rgba(232, 223, 208, 0.9) 0%, transparent 60%),
-      linear-gradient(180deg, var(--parchment) 0%, var(--cream) 100%);
+      radial-gradient(ellipse 90% 70% at 8% 12%, rgba(201, 184, 154, 0.18) 0%, transparent 55%),
+      radial-gradient(ellipse 70% 55% at 92% 88%, rgba(58, 63, 45, 0.06) 0%, transparent 60%),
+      linear-gradient(180deg, var(--parchment) 0%, var(--ivory) 100%);
     border-top: 1px solid var(--line);
   }
   #services::before {
@@ -545,7 +608,7 @@
     font-size: clamp(34px, 3.4vw, 48px);
     font-weight: 300; font-style: italic;
     line-height: 1;
-    color: rgba(196, 165, 116, 0.55);
+    color: rgba(201, 184, 154, 0.7);
     letter-spacing: 0.04em;
     padding-top: 2px;
     transition: color 0.35s ease, transform 0.45s ease;
@@ -562,7 +625,7 @@
     margin-bottom: 10px; line-height: 1.15;
     transition: color 0.3s ease;
   }
-  .service-item:hover .service-name { color: var(--earth); }
+  .service-item:hover .service-name { color: var(--olive); }
   .service-desc {
     font-size: 14px; line-height: 1.7; color: var(--text-muted); font-weight: 300;
     max-width: 34ch;
@@ -625,23 +688,23 @@
   .btn-earth {
     display: inline-flex; align-items: center; gap: 12px;
     font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
-    color: var(--parchment); text-decoration: none; font-weight: 600;
-    background: var(--chocolate);
-    padding: 16px 34px; border-radius: 2px;
+    color: var(--ivory); text-decoration: none; font-weight: 600;
+    background: var(--olive);
+    padding: 16px 34px; border-radius: 0;
     transition: background 0.3s, transform 0.2s;
   }
-  .btn-earth:hover { background: var(--earth); transform: translateY(-2px); }
+  .btn-earth:hover { background: var(--olive-deep); transform: translateY(-2px); }
   .btn-ghost {
     display: inline-flex; align-items: center;
     font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
-    color: var(--chocolate); text-decoration: none; font-weight: 500;
-    border: 1px solid rgba(60, 42, 30, 0.28);
-    padding: 15px 28px; border-radius: 2px;
+    color: var(--charcoal); text-decoration: none; font-weight: 500;
+    border: 1px solid rgba(26, 25, 23, 0.28);
+    padding: 15px 28px; border-radius: 0;
     transition: border-color 0.25s, background 0.25s;
   }
   .btn-ghost:hover {
-    border-color: var(--gold-deep);
-    background: rgba(196, 165, 116, 0.12);
+    border-color: var(--olive);
+    background: rgba(58, 63, 45, 0.08);
   }
   .contact-meta {
     margin-top: 40px;
@@ -653,7 +716,7 @@
   footer {
     display: flex; justify-content: space-between; align-items: center;
     padding: 40px 64px;
-    background: var(--chocolate);
+    background: var(--olive-deep);
     color: var(--tan);
     gap: 24px; flex-wrap: wrap;
   }
@@ -664,26 +727,25 @@
   .footer-brand-name {
     font-family: 'Cormorant Garamond', serif;
     font-size: 18px; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--parchment);
+    color: var(--ivory);
   }
   .footer-brand-name .amp {
-    font-family: 'Great Vibes', cursive;
-    letter-spacing: 0; text-transform: none;
-    color: var(--gold); font-size: 1.2em;
+    letter-spacing: 0.08em;
+    color: var(--sandstone);
   }
   .footer-brand-sub {
     font-size: 8px; letter-spacing: 0.4em; text-transform: uppercase;
     color: var(--tan); opacity: 0.75;
   }
   .footer-copy {
-    font-size: 10px; letter-spacing: 0.08em; color: rgba(212, 192, 160, 0.65);
+    font-size: 10px; letter-spacing: 0.08em; color: rgba(212, 200, 180, 0.65);
   }
   .footer-links { display: flex; gap: 24px; list-style: none; flex-wrap: wrap; }
   .footer-links a {
     font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
     color: var(--tan); text-decoration: none; transition: color 0.25s;
   }
-  .footer-links a:hover { color: var(--parchment); }
+  .footer-links a:hover { color: var(--ivory); }
 
   /* ── WhatsApp FAB ── */
   .wa-fab {
@@ -700,7 +762,6 @@
     html { scroll-behavior: auto; }
     .reveal { opacity: 1; transform: none; transition: none; }
     .hero-inner, .hero-scroll { animation: none !important; transform: none !important; filter: none !important; }
-    .hero-logo-img { animation: none; }
     .hero-scroll-line::after { animation: none; }
     .hero-video { display: none !important; }
     .hero-video-wrap.is-playing .hero-video-poster { opacity: 1; }
@@ -744,7 +805,11 @@
     nav { padding: 18px 24px; }
     nav.scrolled { padding: 13px 24px; }
     #hero { padding: 96px 22px 72px; }
-    .hero-inner > picture { width: min(168px, 42vw); margin-bottom: 20px; }
+    .hero-mark { width: min(56px, 16vw); margin-bottom: 16px; }
+    .hero-brand { letter-spacing: 0.16em; }
+    .hero-brand-sub { margin-bottom: 22px; }
+    .hero-actions { flex-direction: column; align-items: stretch; width: min(280px, 100%); }
+    .hero-cta, .hero-cta-ghost { justify-content: center; }
     section { padding: 72px 24px; }
     #contact { padding: 88px 24px; }
     footer {
@@ -760,9 +825,10 @@
   }
 
   @media (max-width: 480px) {
-    .nav-logo-main { font-size: 17px; letter-spacing: 0.14em; }
-    .hero-inner > picture { width: min(148px, 40vw); margin-bottom: 16px; }
-    .hero-tagline { font-size: 26px; }
+    .nav-logo-mark { width: 30px; height: 15px; }
+    .nav-logo-main { font-size: 16px; letter-spacing: 0.12em; }
+    .hero-brand { font-size: 26px; }
+    .hero-tagline { font-size: 24px; }
     .gallery-grid { grid-template-columns: 1fr; }
     .contact-actions { flex-direction: column; align-items: stretch; }
     .btn-earth, .btn-ghost { justify-content: center; }
@@ -775,14 +841,19 @@
 <!-- NAV -->
 <nav id="navbar">
   <a href="#hero" class="nav-logo">
-    <span class="nav-logo-main">Earth <span class="amp">&amp;</span> Light</span>
-    <span class="nav-logo-sub">Drone Photography</span>
+    <span class="nav-logo-mark" aria-hidden="true">
+      <svg viewBox="0 0 120 56" fill="none"><path d="M28 36c0-15.464 12.536-28 28-28s28 12.536 28 28" fill="currentColor" opacity="0.92"/><path d="M8 40 L72 36 L68 42 L12 44 Z" fill="currentColor" opacity="0.55"/><path d="M48 42 L112 38 L112 46 L52 48 Z" fill="currentColor" opacity="0.88"/></svg>
+    </span>
+    <span class="nav-logo-text">
+      <span class="nav-logo-main">Earth <span class="amp">&amp;</span> Light</span>
+      <span class="nav-logo-sub">Visual Studio</span>
+    </span>
   </a>
   <ul class="nav-links">
     <li><a href="#about">Story</a></li>
     <li><a href="#gallery">From Above</a></li>
     <li><a href="#services">Services</a></li>
-    <li><a href="#contact">Enquire</a></li>
+    <li><a href="#contact" class="nav-enquire">Enquire</a></li>
     <li><a href="index.html" class="nav-sister">The Light Pantry</a></li>
   </ul>
   <button class="nav-burger" id="navBurger" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false">
@@ -828,13 +899,17 @@
   <div class="hero-scrim" aria-hidden="true"></div>
   <div class="hero-grain" aria-hidden="true"></div>
   <div class="hero-inner">
-    <picture>
-      <source type="image/webp" srcset="images/earth-and-light/logo-hero.webp">
-      <img class="hero-logo-img" src="images/earth-and-light/logo-hero.jpg" alt="Earth &amp; Light Photography by D.C. Uijs" width="1000" height="1000" decoding="async">
-    </picture>
+    <div class="hero-mark" aria-hidden="true">
+      <svg viewBox="0 0 120 56" fill="none"><path d="M28 36c0-15.464 12.536-28 28-28s28 12.536 28 28" fill="currentColor" opacity="0.92"/><path d="M8 40 L72 36 L68 42 L12 44 Z" fill="currentColor" opacity="0.55"/><path d="M48 42 L112 38 L112 46 L52 48 Z" fill="currentColor" opacity="0.88"/></svg>
+    </div>
+    <p class="hero-brand">Earth <span class="amp">&amp;</span> Light</p>
+    <p class="hero-brand-sub">Visual Studio</p>
     <h1 class="hero-tagline">The land, seen from light.</h1>
-    <p class="hero-support">Aerial photography for place, property, and story — a sister craft to The Light Pantry.</p>
-    <a href="#gallery" class="hero-cta">Explore from above</a>
+    <p class="hero-support">Aerial photography for nature, commercial sites, and story — a sister craft to The Light Pantry.</p>
+    <div class="hero-actions">
+      <a href="#gallery" class="hero-cta">Explore from above</a>
+      <a href="#about" class="hero-cta-ghost">View the story</a>
+    </div>
   </div>
   <div class="hero-scroll" aria-hidden="true">
     <div class="hero-scroll-line"></div>
@@ -1121,9 +1196,9 @@
 <footer>
   <a href="#hero" class="footer-brand">
     <span class="footer-brand-name">Earth <span class="amp">&amp;</span> Light</span>
-    <span class="footer-brand-sub">Photography by D.C. Uijs</span>
+    <span class="footer-brand-sub">Visual Studio · by D.C. Uijs</span>
   </a>
-  <p class="footer-copy">© 2026 Earth &amp; Light · Mockup alongside The Light Pantry</p>
+  <p class="footer-copy">© 2026 Earth &amp; Light Visual Studio · alongside The Light Pantry</p>
   <ul class="footer-links">
     <li><a href="#gallery">From Above</a></li>
     <li><a href="#contact">Enquire</a></li>
