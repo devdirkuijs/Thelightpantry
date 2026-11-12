@@ -743,8 +743,8 @@
     .nav-drawer { display: flex; }
     nav { padding: 18px 24px; }
     nav.scrolled { padding: 13px 24px; }
-    #hero { padding: 110px 22px 88px; }
-    .hero-inner > picture { width: 82vw; margin-bottom: 26px; }
+    #hero { padding: 96px 22px 72px; }
+    .hero-inner > picture { width: min(168px, 42vw); margin-bottom: 20px; }
     section { padding: 72px 24px; }
     #contact { padding: 88px 24px; }
     footer {
@@ -761,6 +761,7 @@
 
   @media (max-width: 480px) {
     .nav-logo-main { font-size: 17px; letter-spacing: 0.14em; }
+    .hero-inner > picture { width: min(148px, 40vw); margin-bottom: 16px; }
     .hero-tagline { font-size: 26px; }
     .gallery-grid { grid-template-columns: 1fr; }
     .contact-actions { flex-direction: column; align-items: stretch; }
