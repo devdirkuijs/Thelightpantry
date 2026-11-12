@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 78" fill="none" aria-hidden="true">
+  <!-- Same geometry; ivory earth so it reads on video/dark UI -->
+  <path d="M58 56c0-19.882 16.118-36 36-36s36 16.118 36 36" fill="#C9B89A"/>
+  <path d="M14 54.2h78v2.8H14z" fill="#C9B89A"/>
+  <path d="M90 52 L168 43.5 L168 60 L90 60 Z" fill="#F4F0E6"/>
+</svg>
