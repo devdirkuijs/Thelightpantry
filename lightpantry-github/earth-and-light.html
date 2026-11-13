@@ -433,16 +433,108 @@
   }
   .collab-note a:hover { color: var(--gold-deep); border-color: var(--chocolate); }
 
-  /* ── GALLERY ── */
+  /* ── GALLERY / PORTFOLIO ── */
   #gallery { background: var(--cream); }
   .gallery-header {
     display: flex; justify-content: space-between; align-items: flex-end;
     gap: 32px; margin-bottom: 48px; flex-wrap: wrap;
   }
   .gallery-hint {
-    font-size: 12px; color: var(--text-muted); max-width: 28ch;
+    font-size: 12px; color: var(--text-muted); max-width: 32ch;
     line-height: 1.6; font-weight: 300;
   }
+
+  .portfolio-project {
+    margin-bottom: 72px;
+  }
+  .project-head {
+    display: flex; flex-wrap: wrap; justify-content: space-between;
+    align-items: flex-end; gap: 16px 32px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  .project-kicker {
+    font-size: 10px; letter-spacing: 0.36em; text-transform: uppercase;
+    color: var(--gold-deep); font-weight: 500; margin-bottom: 10px;
+  }
+  .project-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(30px, 4vw, 44px);
+    font-weight: 300; line-height: 1.1; color: var(--chocolate);
+  }
+  .project-meta {
+    font-size: 12px; line-height: 1.6; color: var(--text-muted);
+    max-width: 28ch; font-weight: 300;
+  }
+  .project-hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--cream-deep);
+    margin-bottom: 14px;
+  }
+  .project-hero picture,
+  .project-hero img {
+    display: block; width: 100%; height: auto;
+  }
+  .project-hero img {
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: center 45%;
+  }
+  .project-hero-caption {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 48px 24px 20px;
+    background: linear-gradient(180deg, transparent 0%, rgba(26, 25, 23, 0.55) 100%);
+    color: var(--ivory);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    font-weight: 500;
+  }
+  .project-clips {
+    display: grid;
+    grid-template-columns: 1.45fr 0.9fr;
+    gap: 14px;
+  }
+  .project-clip {
+    position: relative;
+    overflow: hidden;
+    background: #1a1410;
+    min-height: 280px;
+  }
+  .project-clip--landscape { aspect-ratio: 16 / 10; min-height: 0; }
+  .project-clip--portrait { aspect-ratio: 3 / 4; min-height: 0; }
+  .project-clip .shot-video-wrap { position: absolute; inset: 0; }
+  .project-clip .shot-video-wrap::before {
+    content: '';
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(180deg, transparent 55%, rgba(26, 20, 16, 0.55) 100%);
+  }
+  .project-clip-meta {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+    padding: 18px 18px 16px;
+    pointer-events: none;
+  }
+  .project-clip-meta .shot-cat { margin-bottom: 4px; }
+  .project-clip-meta .shot-title {
+    font-size: clamp(18px, 2vw, 24px);
+  }
+  .motion-divider {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+    margin: 56px 0 28px;
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+  }
+  .motion-divider h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(22px, 2.5vw, 28px);
+    font-weight: 300; color: var(--chocolate);
+  }
+  .motion-divider p {
+    font-size: 12px; color: var(--text-muted); max-width: 36ch;
+    line-height: 1.55; font-weight: 300;
+  }
+
   .gallery-grid {
     display: grid;
     grid-template-columns: 1.4fr 1fr 1fr;
@@ -805,6 +897,8 @@
       grid-row: auto;
       min-height: 360px;
     }
+    .project-clips { grid-template-columns: 1fr 1fr; }
+    .project-clip--portrait { aspect-ratio: 3 / 4; }
   }
 
   @media (max-width: 768px) {
@@ -831,6 +925,11 @@
     .shot { min-height: 200px; }
     .shot:first-child { min-height: 280px; }
     .shot-title { font-size: 20px; }
+    .portfolio-project { margin-bottom: 48px; }
+    .project-clips { grid-template-columns: 1fr; gap: 12px; }
+    .project-clip--landscape { aspect-ratio: 16 / 10; }
+    .project-clip--portrait { aspect-ratio: 4 / 5; max-width: 420px; }
+    .project-hero-caption { padding: 36px 18px 16px; font-size: 10px; }
     .reveal { transform: translateY(18px); }
   }
 
@@ -958,8 +1057,96 @@
       <p class="section-label">Portfolio</p>
       <h2 class="section-title">Selected <em>work</em></h2>
     </div>
-    <p class="gallery-hint">Architectural motion studies for now — still portfolios will be added per project as editing is completed.</p>
+    <p class="gallery-hint">Project entries grow as stills are edited — University of Mpumalanga leads the architectural portfolio.</p>
   </div>
+
+  <article class="portfolio-project reveal" id="ump">
+    <header class="project-head">
+      <div>
+        <p class="project-kicker">01 — Campus architecture</p>
+        <h3 class="project-title">University of Mpumalanga</h3>
+      </div>
+      <p class="project-meta">Aerial and detail studies of campus buildings — more stills to follow as editing completes.</p>
+    </header>
+
+    <figure class="project-hero">
+      <picture>
+        <source type="image/webp" srcset="images/earth-and-light/ump/hero-thumb.webp 960w, images/earth-and-light/ump/hero.webp 1600w" sizes="(max-width: 900px) 100vw, 1100px">
+        <img
+          src="images/earth-and-light/ump/hero.jpg"
+          srcset="images/earth-and-light/ump/hero-thumb.jpg 960w, images/earth-and-light/ump/hero.jpg 1600w"
+          sizes="(max-width: 900px) 100vw, 1100px"
+          alt="Tshomoshongwe Building plaza, University of Mpumalanga"
+          width="1600"
+          height="1200"
+          loading="lazy"
+          decoding="async"
+        >
+      </picture>
+      <figcaption class="project-hero-caption">Tshomoshongwe Building · plaza</figcaption>
+    </figure>
+
+    <div class="project-clips">
+      <div class="project-clip project-clip--landscape has-video">
+        <div class="shot-video-wrap" id="umpLandscapeWrap" aria-hidden="true">
+          <img
+            class="shot-video-poster"
+            src="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/8e791914d132f70d1a216845dd8797ee/thumbnails/thumbnail.jpg"
+            alt=""
+            width="1280"
+            height="720"
+            decoding="async"
+            loading="lazy"
+          >
+          <video
+            class="shot-video"
+            id="umpLandscapeVideo"
+            muted
+            loop
+            playsinline
+            preload="none"
+            poster="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/8e791914d132f70d1a216845dd8797ee/thumbnails/thumbnail.jpg"
+          ></video>
+        </div>
+        <div class="project-clip-meta">
+          <p class="shot-cat">Aerial</p>
+          <h4 class="shot-title">Campus landscape</h4>
+        </div>
+      </div>
+      <div class="project-clip project-clip--portrait has-video">
+        <div class="shot-video-wrap" id="umpPortraitWrap" aria-hidden="true">
+          <img
+            class="shot-video-poster"
+            src="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/6307cee44de8ecc940f681c195c1eb7c/thumbnails/thumbnail.jpg"
+            alt=""
+            width="1080"
+            height="1440"
+            decoding="async"
+            loading="lazy"
+          >
+          <video
+            class="shot-video"
+            id="umpPortraitVideo"
+            muted
+            loop
+            playsinline
+            preload="none"
+            poster="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/6307cee44de8ecc940f681c195c1eb7c/thumbnails/thumbnail.jpg"
+          ></video>
+        </div>
+        <div class="project-clip-meta">
+          <p class="shot-cat">Detail</p>
+          <h4 class="shot-title">Vertical study</h4>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <div class="motion-divider reveal">
+    <h3>Motion studies</h3>
+    <p>Supporting aerial atmosphere while project stills are prepared.</p>
+  </div>
+
   <div class="gallery-grid reveal">
     <article class="shot shot-a has-video">
       <div class="shot-frame">
@@ -1350,6 +1537,16 @@
     attachStreamSource(video, STREAM_HLS, tryPlay);
   })();
 
+  initGalleryStreamVideo(
+    'https://customer-gjmetbrg2imyqu69.cloudflarestream.com/8e791914d132f70d1a216845dd8797ee/manifest/video.m3u8',
+    'umpLandscapeVideo',
+    'umpLandscapeWrap'
+  );
+  initGalleryStreamVideo(
+    'https://customer-gjmetbrg2imyqu69.cloudflarestream.com/6307cee44de8ecc940f681c195c1eb7c/manifest/video.m3u8',
+    'umpPortraitVideo',
+    'umpPortraitWrap'
+  );
   initGalleryStreamVideo(
     'https://customer-gjmetbrg2imyqu69.cloudflarestream.com/5e37d34fb95beffc1b1cd5c10ec52656/manifest/video.m3u8',
     'shotWavesVideo',
