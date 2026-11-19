@@ -449,10 +449,10 @@
 
   .portfolio-index {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px 16px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
     align-items: start;
-    margin-bottom: 64px;
+    margin-bottom: 56px;
   }
   .portfolio-project {
     min-width: 0;
@@ -481,22 +481,11 @@
   }
   .project-tease-mosaic {
     display: grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 0.82fr);
-    gap: 10px;
-    height: min(32vh, 280px);
-  }
-  /* With 2+ projects, each tease is a single compact tile */
-  .portfolio-index:has(> .portfolio-project:nth-child(2)) .project-tease-mosaic {
     grid-template-columns: 1fr;
+    gap: 0;
     height: min(30vh, 260px);
   }
-  .portfolio-index:has(> .portfolio-project:nth-child(2)) .project-peek {
-    display: none;
-  }
-  /* Solo project: mosaic spans the index so several photos read at once */
-  .portfolio-index:has(> .portfolio-project:only-child) > .portfolio-project {
-    grid-column: 1 / -1;
-  }
+  .project-peek { display: none; }
   .project-hero,
   .project-peek {
     position: relative;
@@ -623,6 +612,10 @@
     grid-template-columns: minmax(0, 1.6fr) minmax(0, 0.72fr);
     gap: 14px;
     align-items: start;
+  }
+  .project-clips:has(> :only-child) {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 920px;
   }
   .project-clip {
     position: relative;
@@ -1069,6 +1062,7 @@
       min-height: 360px;
     }
     .project-clips { grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.8fr); }
+    .portfolio-index { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
 
   @media (max-width: 768px) {
@@ -1097,16 +1091,12 @@
     .shot-title { font-size: 20px; }
     .portfolio-index {
       grid-template-columns: 1fr;
-      gap: 14px;
-      margin-bottom: 48px;
+      gap: 12px;
+      margin-bottom: 40px;
     }
     .project-tease-mosaic {
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: minmax(0, 200px) minmax(0, 132px);
-      height: auto;
-      max-height: none;
+      height: min(28vh, 220px);
     }
-    .project-hero { grid-column: 1 / -1; }
     .project-title { font-size: clamp(22px, 6vw, 28px); }
     .project-toggle-icon { width: 34px; height: 34px; }
     .project-hero-footer { padding: 14px 12px 12px; }
@@ -1115,8 +1105,7 @@
     .project-clip--portrait { aspect-ratio: 1080 / 1854; max-width: 420px; }
     .clip-play-orb { width: 56px; height: 56px; }
     .portfolio-project.is-open .project-tease-mosaic {
-      height: auto;
-      grid-template-rows: minmax(0, 220px) minmax(0, 132px);
+      height: min(32vh, 260px);
     }
     .reveal { transform: translateY(18px); }
   }
@@ -1267,32 +1256,6 @@
             </button>
           </div>
         </figure>
-
-        <figure class="project-peek" data-project-open="ump" role="button" tabindex="0" aria-label="Open University of Mpumalanga — campus landscape">
-          <img
-            src="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/8e791914d132f70d1a216845dd8797ee/thumbnails/thumbnail.jpg"
-            alt=""
-            width="1920"
-            height="1080"
-            loading="lazy"
-            decoding="async"
-          >
-          <div class="project-peek-shade" aria-hidden="true"></div>
-          <p class="project-peek-caption">Campus landscape</p>
-        </figure>
-
-        <figure class="project-peek" data-project-open="ump" role="button" tabindex="0" aria-label="Open University of Mpumalanga — vertical study">
-          <img
-            src="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/6307cee44de8ecc940f681c195c1eb7c/thumbnails/thumbnail.jpg"
-            alt=""
-            width="1080"
-            height="1854"
-            loading="lazy"
-            decoding="async"
-          >
-          <div class="project-peek-shade" aria-hidden="true"></div>
-          <p class="project-peek-caption">Vertical study</p>
-        </figure>
       </div>
     </div>
 
@@ -1366,6 +1329,110 @@
       </div>
     </div>
   </article>
+
+  <article class="portfolio-project reveal" id="commercial">
+    <div class="project-tease">
+      <div class="project-tease-mosaic">
+        <figure class="project-hero" id="commercialHero" data-project-open="commercial">
+          <img
+            src="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/d18a856c465d9800644d04a8407ab19e/thumbnails/thumbnail.jpg"
+            alt="Commercial aerial overview"
+            width="1920"
+            height="1080"
+            loading="lazy"
+            decoding="async"
+          >
+          <div class="project-hero-shade" aria-hidden="true"></div>
+          <div class="project-hero-footer">
+            <div class="project-hero-copy">
+              <p class="project-kicker">02 — Commercial aerial</p>
+              <h3 class="project-title">Site overview</h3>
+              <p class="project-hero-caption">Scale and setting from above</p>
+            </div>
+            <button type="button" class="project-toggle" id="commercialToggle" aria-expanded="false" aria-controls="commercialMedia">
+              <span class="project-toggle-icon" aria-hidden="true">
+                <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1.5v9M1.5 6h9"/></svg>
+              </span>
+              <span class="project-toggle-label-closed">Explore</span>
+              <span class="project-toggle-label-open">Close</span>
+            </button>
+          </div>
+        </figure>
+      </div>
+    </div>
+    <div class="project-media" id="commercialMedia" aria-hidden="true">
+      <div class="project-media-inner">
+        <p class="project-media-label">Motion from the shoot</p>
+        <div class="project-clips">
+          <div class="project-clip project-clip--landscape has-video" id="commercialClip">
+            <div class="shot-video-wrap" id="commercialWrap" aria-hidden="true">
+              <img class="shot-video-poster" src="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/d18a856c465d9800644d04a8407ab19e/thumbnails/thumbnail.jpg" alt="" width="1920" height="1080" decoding="async" loading="lazy">
+              <video class="shot-video" id="commercialVideo" muted loop playsinline preload="none" poster="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/d18a856c465d9800644d04a8407ab19e/thumbnails/thumbnail.jpg"></video>
+            </div>
+            <button type="button" class="clip-play" aria-label="Play site overview">
+              <span class="clip-play-orb" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+            </button>
+            <div class="project-clip-meta">
+              <p class="shot-cat">Aerial</p>
+              <h4 class="shot-title">Commercial overview</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article class="portfolio-project reveal" id="structure">
+    <div class="project-tease">
+      <div class="project-tease-mosaic">
+        <figure class="project-hero" id="structureHero" data-project-open="structure">
+          <img
+            src="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/3cda92dafcd75126cc45fc4f2359eef0/thumbnails/thumbnail.jpg"
+            alt="Building structure and finish detail"
+            width="1080"
+            height="1440"
+            loading="lazy"
+            decoding="async"
+          >
+          <div class="project-hero-shade" aria-hidden="true"></div>
+          <div class="project-hero-footer">
+            <div class="project-hero-copy">
+              <p class="project-kicker">03 — Building detail</p>
+              <h3 class="project-title">Structure &amp; finish</h3>
+              <p class="project-hero-caption">Finer lines of the build</p>
+            </div>
+            <button type="button" class="project-toggle" id="structureToggle" aria-expanded="false" aria-controls="structureMedia">
+              <span class="project-toggle-icon" aria-hidden="true">
+                <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1.5v9M1.5 6h9"/></svg>
+              </span>
+              <span class="project-toggle-label-closed">Explore</span>
+              <span class="project-toggle-label-open">Close</span>
+            </button>
+          </div>
+        </figure>
+      </div>
+    </div>
+    <div class="project-media" id="structureMedia" aria-hidden="true">
+      <div class="project-media-inner">
+        <p class="project-media-label">Motion from the shoot</p>
+        <div class="project-clips">
+          <div class="project-clip project-clip--portrait has-video" id="structureClip">
+            <div class="shot-video-wrap" id="structureWrap" aria-hidden="true">
+              <img class="shot-video-poster" src="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/3cda92dafcd75126cc45fc4f2359eef0/thumbnails/thumbnail.jpg" alt="" width="1080" height="1440" decoding="async" loading="lazy">
+              <video class="shot-video" id="structureVideo" muted loop playsinline preload="none" poster="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/3cda92dafcd75126cc45fc4f2359eef0/thumbnails/thumbnail.jpg"></video>
+            </div>
+            <button type="button" class="clip-play" aria-label="Play structure and finish">
+              <span class="clip-play-orb" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+            </button>
+            <div class="project-clip-meta">
+              <p class="shot-cat">Detail</p>
+              <h4 class="shot-title">Structure &amp; finish</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
   </div>
 
 
@@ -1401,34 +1468,6 @@
       <div class="shot-meta">
         <p class="shot-cat">Context</p>
         <h3 class="shot-title">Coastal setting</h3>
-      </div>
-    </article>
-    <article class="shot shot-b has-video">
-      <div class="shot-frame">
-        <div class="shot-video-wrap" id="shotEagleWrap" aria-hidden="true">
-          <img
-            class="shot-video-poster"
-            src="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/d18a856c465d9800644d04a8407ab19e/thumbnails/thumbnail.jpg"
-            alt=""
-            width="1920"
-            height="1080"
-            decoding="async"
-            loading="lazy"
-          >
-          <video
-            class="shot-video"
-            id="shotEagleVideo"
-            muted
-            loop
-            playsinline
-            preload="none"
-            poster="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/d18a856c465d9800644d04a8407ab19e/thumbnails/thumbnail.jpg"
-          ></video>
-        </div>
-      </div>
-      <div class="shot-meta">
-        <p class="shot-cat">Aerial</p>
-        <h3 class="shot-title">Commercial overview</h3>
       </div>
     </article>
     <article class="shot shot-c has-video">
@@ -1513,34 +1552,6 @@
       <div class="shot-meta">
         <p class="shot-cat">Atmosphere</p>
         <h3 class="shot-title">Evening horizon</h3>
-      </div>
-    </article>
-    <article class="shot shot-f has-video">
-      <div class="shot-frame">
-        <div class="shot-video-wrap" id="shotSiteDetailWrap" aria-hidden="true">
-          <img
-            class="shot-video-poster"
-            src="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/3cda92dafcd75126cc45fc4f2359eef0/thumbnails/thumbnail.jpg"
-            alt=""
-            width="1080"
-            height="1440"
-            decoding="async"
-            loading="lazy"
-          >
-          <video
-            class="shot-video"
-            id="shotSiteDetailVideo"
-            muted
-            loop
-            playsinline
-            preload="none"
-            poster="https://customer-gjmetbrg2imyqu69.cloudflarestream.com/3cda92dafcd75126cc45fc4f2359eef0/thumbnails/thumbnail.jpg"
-          ></video>
-        </div>
-      </div>
-      <div class="shot-meta">
-        <p class="shot-cat">Detail</p>
-        <h3 class="shot-title">Structure &amp; finish</h3>
       </div>
     </article>
   </div>
@@ -1821,18 +1832,31 @@
       const media = project.querySelector('.project-media');
       if (!toggle || !media) return;
 
+      const pauseProject = (target) => {
+        target.querySelectorAll('video').forEach((video) => video.pause());
+        target.querySelectorAll('.project-clip.is-playing, .shot-video-wrap.is-playing').forEach((el) => {
+          el.classList.remove('is-playing');
+        });
+        target.querySelectorAll('.clip-play').forEach((btn) => btn.removeAttribute('aria-hidden'));
+      };
+
       const setOpen = (open) => {
+        if (open) {
+          projects.forEach((other) => {
+            if (other === project || !other.classList.contains('is-open')) return;
+            other.classList.remove('is-open');
+            const otherToggle = other.querySelector('.project-toggle');
+            const otherMedia = other.querySelector('.project-media');
+            if (otherToggle) otherToggle.setAttribute('aria-expanded', 'false');
+            if (otherMedia) otherMedia.setAttribute('aria-hidden', 'true');
+            pauseProject(other);
+          });
+        }
         project.classList.toggle('is-open', open);
         toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
         media.setAttribute('aria-hidden', open ? 'false' : 'true');
         if (!open) {
-          project.querySelectorAll('video').forEach((video) => {
-            video.pause();
-          });
-          project.querySelectorAll('.project-clip.is-playing, .shot-video-wrap.is-playing').forEach((el) => {
-            el.classList.remove('is-playing');
-          });
-          project.querySelectorAll('.clip-play').forEach((btn) => btn.removeAttribute('aria-hidden'));
+          pauseProject(project);
         } else if (media.scrollIntoView) {
           requestAnimationFrame(() => {
             media.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
@@ -1894,15 +1918,24 @@
     'umpPortraitClip',
     '.clip-play'
   );
+  initProjectClickPlay(
+    'https://customer-gjmetbrg2imyqu69.cloudflarestream.com/d18a856c465d9800644d04a8407ab19e/manifest/video.m3u8',
+    'commercialVideo',
+    'commercialWrap',
+    'commercialClip',
+    '.clip-play'
+  );
+  initProjectClickPlay(
+    'https://customer-gjmetbrg2imyqu69.cloudflarestream.com/3cda92dafcd75126cc45fc4f2359eef0/manifest/video.m3u8',
+    'structureVideo',
+    'structureWrap',
+    'structureClip',
+    '.clip-play'
+  );
   initGalleryStreamVideo(
     'https://customer-gjmetbrg2imyqu69.cloudflarestream.com/5e37d34fb95beffc1b1cd5c10ec52656/manifest/video.m3u8',
     'shotWavesVideo',
     'shotWavesWrap'
-  );
-  initGalleryStreamVideo(
-    'https://customer-gjmetbrg2imyqu69.cloudflarestream.com/d18a856c465d9800644d04a8407ab19e/manifest/video.m3u8',
-    'shotEagleVideo',
-    'shotEagleWrap'
   );
   initGalleryStreamVideo(
     'https://customer-gjmetbrg2imyqu69.cloudflarestream.com/c112e66c3887d34742b73916277cbab9/manifest/video.m3u8',
@@ -1918,11 +1951,6 @@
     'https://customer-gjmetbrg2imyqu69.cloudflarestream.com/32d22451cd146823123a9eff55080888/manifest/video.m3u8',
     'shotSunsetVideo',
     'shotSunsetWrap'
-  );
-  initGalleryStreamVideo(
-    'https://customer-gjmetbrg2imyqu69.cloudflarestream.com/3cda92dafcd75126cc45fc4f2359eef0/manifest/video.m3u8',
-    'shotSiteDetailVideo',
-    'shotSiteDetailWrap'
   );
 </script>
 </body>
